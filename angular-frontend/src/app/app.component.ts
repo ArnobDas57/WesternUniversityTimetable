@@ -73,5 +73,3 @@ export class AppComponent {
     return this.savedSchedules;
   }
 }
-     
-     

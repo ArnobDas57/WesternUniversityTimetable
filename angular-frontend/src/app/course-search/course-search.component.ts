@@ -53,4 +53,3 @@ export class CourseSearchComponent implements OnInit {
     this.results = '';
   } 
 }
-
