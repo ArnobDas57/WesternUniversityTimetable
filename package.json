@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "@angular/cli": "^11.0.2",
     "express": "^4.17.1",
-    "joi": "^17.3.0"
+    "joi": "^17.3.0",
+    "nodemon": "^2.0.6"
   }
 }
