@@ -1,0 +1,31 @@
+<h2>Create Schedule With Name and # of Courses: </h2>
+
+<div>
+  <h3>
+    <label for="ib1">Name: </label>
+    <input #inputBox1 placeholder="Schedule Name" id="ib1" (input)="search(inputBox1.value)"/>
+
+    <label for="ib2">Quantity: </label>
+    <input #inputBox2 placeholder="Quantity of Courses" id="ib2" type="number" (input)="search(inputBox2.value)"/>
+
+    <button *ngIf="inputBox1.value && (inputBox2.value && inputBox2.value > 0)" 
+            (click)="add(inputBox1.value, inputBox2.value);"> Create Schedule </button>
+  </h3>
+</div>
+
+<table #table *ngIf="inputBox1.value && (inputBox2.value && (inputBox2.value > 0 && 11 > inputBox2.value))" >
+  <tr>
+    <td> # </td>
+    <td> Subject Code </td>
+    <td> Course Code </td>
+  </tr>
+  <tr *ngFor="let q of quantity; let rowIndex = index">
+    <td> {{q}} </td>
+    <td><input #SubjectBox [(ngModel)]="SubjectList[rowIndex]"/></td>
+    <td><input #CourseBox [(ngModel)]="CCList[rowIndex]"/></td>
+  </tr>
+</table>
+
+<div *ngIf="inputBox1.value && (inputBox2.value && inputBox2.value > 0  && 11 > inputBox2.value)">
+  <button (click)="addCourses(inputBox1.value); inputBox1.value=''; inputBox2.value=''"> Add Selected Courses </button>
+</div>

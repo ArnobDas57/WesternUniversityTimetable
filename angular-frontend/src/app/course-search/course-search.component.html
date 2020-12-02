@@ -1,0 +1,152 @@
+<div id="search-component">
+    <h4>
+      <label for="search-box1">Subject: </label>
+      <input #searchBox1 placeholder="Subject Code" id="search-box1" (input)="search(searchBox1.value)" />
+
+      <label for="search-box2">Course: </label>
+      <input #searchBox2 placeholder="Course Code" id="search-box2" (input)="search(searchBox2.value)" />
+
+      <label for="search-box3">Component: </label>
+      <input #searchBox3 placeholder="Component Code" id="search-box3" (input)="search(searchBox3.value)" />
+    </h4>
+
+    <div *ngIf="!searchBox1.value && !searchBox2.value && !searchBox3.value">
+      <button (click)="getResults()">
+        Search
+      </button>
+    </div>
+
+    <div *ngIf="searchBox1.value && !searchBox2.value && !searchBox3.value">
+      <button (click)="getResults2(searchBox1.value)">
+        Search
+      </button>
+    </div>
+
+    <div *ngIf="searchBox1.value && searchBox2.value && !searchBox3.value">
+      <button (click)="getResults3a(searchBox1.value, searchBox2.value)">
+        Search
+      </button>
+    </div>
+
+    <div *ngIf="searchBox1.value && searchBox2.value && searchBox3.value">
+      <button (click)="getResults3b(searchBox1.value, searchBox2.value, searchBox3.value)">
+        Search
+      </button>
+    </div>
+</div>
+
+<div>
+    <ul class="search-result">
+      <li *ngFor="let result of results | async" >
+        <table>
+          <tr>
+            <td> Subject </td>
+            <td> Class Name </td>
+          </tr>
+          <tr>
+            <td>{{ result.subject }}</td>
+            <td>{{ result.className }}</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+</div>
+
+<div>
+  <ul class="search-result">
+    <li *ngFor="let result2 of results2 | async" >
+      <h5>{{ result2.subject }} {{ result2.catalog_nbr }} - {{ result2.className }}</h5>
+      <span>{{ result2.description }}</span>
+      <table>
+        <tr>
+          <td> Section </td>
+          <td> Component </td>
+          <td> Class Number </td>
+          <td> Days </td>
+          <td> Start Time </td>
+          <td> End Time </td>
+          <td> Campus </td>
+          <td> Instructor </td>
+          <td> Status </td>
+        </tr>
+        <tr>
+          <td>{{ result2.course_info[0].class_section }}</td>
+          <td>{{ result2.course_info[0].ssr_component }}</td>
+          <td>{{ result2.course_info[0].class_nbr }}</td>
+          <td>{{ result2.course_info[0].days }}</td>
+          <td>{{ result2.course_info[0].start_time }}</td>
+          <td>{{ result2.course_info[0].end_time }}</td>
+          <td>{{ result2.course_info[0].campus }}</td>
+          <td>{{ result2.course_info[0].instructors }}</td>
+          <td>{{ result2.course_info[0].enrl_stat }}</td>
+        </tr>
+      </table>
+    </li>
+  </ul>
+</div>
+
+<div>
+  <ul class="search-result">
+    <li *ngFor="let result3a of results3a | async" >
+      <h5>{{ result3a.subject }} {{ result3a.catalog_nbr }} - {{ result3a.className }}</h5>
+      <span>{{ result3a.catalog_description }}</span>
+      <table>
+        <tr>
+          <td> Section </td>
+          <td> Component </td>
+          <td> Class Number </td>
+          <td> Days </td>
+          <td> Start Time </td>
+          <td> End Time </td>
+          <td> Campus </td>
+          <td> Instructor </td>
+          <td> Status </td>
+        </tr>
+        <tr>
+          <td>{{ result3a.course_info[0].class_section }}</td>
+          <td>{{ result3a.course_info[0].ssr_component }}</td>
+          <td>{{ result3a.course_info[0].class_nbr }}</td>
+          <td>{{ result3a.course_info[0].days }}</td>
+          <td>{{ result3a.course_info[0].start_time }}</td>
+          <td>{{ result3a.course_info[0].end_time }}</td>
+          <td>{{ result3a.course_info[0].campus }}</td>
+          <td>{{ result3a.course_info[0].instructors }}</td>
+          <td>{{ result3a.course_info[0].enrl_stat }}</td>
+        </tr>
+      </table>
+    </li>
+  </ul>
+</div>
+
+<div>
+  <ul class="search-result">
+    <li *ngFor="let result3b of results3b | async" >
+      <h5 class="s1">{{ result3b.subject }} {{ result3b.catalog_nbr }} - {{ result3b.className }}</h5>
+      <span>{{ result3b.catalog_description }}</span>
+      <table>
+        <tr>
+          <td> Section </td>
+          <td> Component </td>
+          <td> Class Number </td>
+          <td> Days </td>
+          <td> Start Time </td>
+          <td> End Time </td>
+          <td> Campus </td>
+          <td> Instructor </td>
+          <td> Status </td>
+        </tr>
+        <tr>
+          <td>{{ result3b.course_info[0].class_section }}</td>
+          <td>{{ result3b.course_info[0].ssr_component }}</td>
+          <td>{{ result3b.course_info[0].class_nbr }}</td>
+          <td>{{ result3b.course_info[0].days }}</td>
+          <td>{{ result3b.course_info[0].start_time }}</td>
+          <td>{{ result3b.course_info[0].end_time }}</td>
+          <td>{{ result3b.course_info[0].campus }}</td>
+          <td>{{ result3b.course_info[0].instructors }}</td>
+          <td>{{ result3b.course_info[0].enrl_stat }}</td>
+        </tr>
+      </table>
+    </li>
+  </ul>
+</div>
