@@ -13,6 +13,7 @@ import { CourseSearchComponent } from './course-search/course-search.component';
 import { CreateSchedComponent } from './create-sched/create-sched.component';
 import { DisplayComponent } from './display/display.component';
 import { FirebaseAppComponent } from './firebase-app/firebase-app.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { FirebaseAppComponent } from './firebase-app/firebase-app.component';
     CourseSearchComponent,
     CreateSchedComponent,
     DisplayComponent,
-    FirebaseAppComponent
+    FirebaseAppComponent,
+    LoginPageComponent
   ],
   bootstrap: [ AppComponent ]
 })
