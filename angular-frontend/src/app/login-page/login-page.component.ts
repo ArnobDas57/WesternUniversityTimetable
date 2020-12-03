@@ -1,5 +1,7 @@
 import { Component} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Location } from '@angular/common';
 import firebase from 'firebase/app';
 
 @Component({
@@ -9,7 +11,7 @@ import firebase from 'firebase/app';
 })
 export class LoginPageComponent {
 
-  constructor(public auth: AngularFireAuth) { }
+  constructor(public auth: AngularFireAuth, private location: Location, private route: ActivatedRoute) { }
 
   emailSignIn(email, password):void 
   {
@@ -29,6 +31,10 @@ export class LoginPageComponent {
         });
       }
     });
+  }
+
+  goBack(): void {
+    this.location.back();
   }
   
 
