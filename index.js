@@ -1,8 +1,17 @@
 const express = require('express');
 const app = express();
+var admin = require('firebase-admin');
+var serviceAccount = require(process.cwd() + "/se3316-lab5-firebase-firebase-adminsdk-5cvel-eebff759f3.json");
+var defaultApp = admin.initializeApp({credential: admin.credential.cert(serviceAccount)});
 const port = 3000;
 
 app.use(express.json());
+
+console.log(defaultApp.name); // '[DEFAULT]'
+
+// Retrieve services via the defaultApp variable
+var defaultAuth = defaultApp.auth();
+// var defaultDatabase = defaultApp.database();
 
 //Function to parse JSON file
 function parsingFunction (datafile) {
