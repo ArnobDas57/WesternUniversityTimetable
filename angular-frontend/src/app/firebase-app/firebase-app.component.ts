@@ -4,18 +4,9 @@ import firebase from 'firebase/app';
 
 @Component({
   selector: 'app-firebase-app',
-  template: `
-  <div *ngIf="auth.user | async as user; else showLogin">
-    <h1>Hello {{ user.displayName }}!</h1>
-    <button (click)="logout()">Logout</button>
-  </div>
-  <ng-template #showLogin>
-    <p>Please login.</p>
-    <button (click)="login()">Login with Google</button>
-  </ng-template>
-`,
+  templateUrl: './firebase-app.component.html',
   styleUrls: ['./firebase-app.component.css']
-})
+}) 
 export class FirebaseAppComponent {
 
   constructor(public auth: AngularFireAuth) { }
@@ -26,5 +17,26 @@ export class FirebaseAppComponent {
   logout() {
     this.auth.signOut();
   }
+
+  emailSignIn(email, password):void 
+  {
+    this.auth.signInWithEmailAndPassword(email, password)
+    .then((user) => {
+      console.log(user);
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
+
+  getCurrentUserToken(): void {
+    this.auth.currentUser.then((user) => {
+      if (user) {
+        user.getIdToken(true).then(token => {
+          console.log(token);
+        });
+      }
+    });
+  }
+
 
 }
