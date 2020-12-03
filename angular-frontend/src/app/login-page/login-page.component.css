@@ -1,0 +1,13 @@
+input {
+    margin: 8px 0;
+    border: none;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    padding: 10px 10px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    font-weight: lighter;
+}

@@ -7,4 +7,9 @@ h3 {
 
   nav {
       align-content: center;
+      text-align: center;
+  }
+
+  nav:hover {
+      color: rgb(46, 89, 243);
   }
