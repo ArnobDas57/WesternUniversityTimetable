@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 });
 
 // Route to GET subject codes and descriptions -- #1
-app.get('/api/courses', (req, res) => {
+app.get('/api/open/courses', (req, res) => {
     const subjects = []; 
     for(i = 0; i < courseData.length; i++) {
          subjects.push({
@@ -53,7 +53,7 @@ app.get('/api/courses', (req, res) => {
 });
 
 // Route to GET all course codes for a given subject code -- #2
-app.get('/api/courses/subjects/:subject', (req, res) => {
+app.get('/api/open/courses/subjects/:subject', (req, res) => {
     const courseCode = [];
     for(i = 0; i < courseData.length; i++) {
         if (String(courseData[i].subject).includes(`${req.params.subject}`) && String(req.params.subject).length <= 15) {
@@ -76,7 +76,7 @@ app.get('/api/courses/subjects/:subject', (req, res) => {
 });
 
 // Route to GET timetable entry with subject, course, and component  -- #3
-app.get('/api/courses/subjects/:subject/:catalog_nbr/:ssr_component', (req, res) => {
+app.get('/api/open/courses/subjects/:subject/:catalog_nbr/:ssr_component', (req, res) => {
     const ttEntry = [];
     for(i = 0; i < courseData.length; i++) {
         if (String(courseData[i].subject).includes(`${req.params.subject}`) 
@@ -94,8 +94,26 @@ app.get('/api/courses/subjects/:subject/:catalog_nbr/:ssr_component', (req, res)
     }
 });
 
+// Route to GET timetable entry with course and component
+app.get('/api/open/courses/subjects/:catalog_nbr/:ssr_component', (req, res) => {
+    const ttEntry = [];
+    for(i = 0; i < courseData.length; i++) {
+        if (String(courseData[i].catalog_nbr).includes(`${req.params.catalog_nbr}`)
+            && String(courseData[i].course_info[0].ssr_component).includes(`${req.params.ssr_component}`)) {
+            ttEntry.push(courseData[i]);
+        }
+    }
+    if (ttEntry.length > 0) {
+        res.send(ttEntry);
+    }
+    // 404 subject code doesn't exist
+    else {
+        res.status(404).send('The timetable entry was not found');
+    }
+});
+
 // Route to GET timetable entry with subject and course -- #3
-app.get('/api/courses/subjects/:subject/:catalog_nbr', (req, res) => {
+app.get('/api/open/courses/subjects/:subject/:catalog_nbr', (req, res) => {
     const ttEntry = [];
     for(i = 0; i < courseData.length; i++) {
         if (String(courseData[i].subject).includes(`${req.params.subject}`)
@@ -113,7 +131,7 @@ app.get('/api/courses/subjects/:subject/:catalog_nbr', (req, res) => {
 });
 
 // Route to create new schedule with given schedule name using POST -- #4
-app.post('/api/courses/schedules', (req, res) => {
+app.post('/api/secure/courses/schedules', (req, res) => {
     const NewName = req.body.scheduleName;
     const schedName = scheduleNamesArray.find(p => p.scheduleName === NewName);
     if(schedName) {
@@ -129,7 +147,7 @@ app.post('/api/courses/schedules', (req, res) => {
 });
 
 // Route to save a list of subject code, course code pairs under schedule name -- #5
-app.put('/api/courses/schedules/:name', (req, res) => {
+app.put('/api/secure/courses/schedules/:name', (req, res) => {
     const name = req.params.name;
     const schedName = scheduleNamesArray.find(p => p.scheduleName === name);
     if(!schedName) {
@@ -152,7 +170,7 @@ app.put('/api/courses/schedules/:name', (req, res) => {
 });
 
 // Route to GET list of subject code, course code pairs for given schedule -- #6
-app.get('/api/courses/schedules/:name', (req, res) => {
+app.get('/api/secure/courses/schedules/:name', (req, res) => {
     const name = req.params.name;
     const schedName = scheduleNamesArray.find(p => p.scheduleName === name);
     if(!schedName) {
@@ -164,7 +182,7 @@ app.get('/api/courses/schedules/:name', (req, res) => {
 });
 
 // Route to DELETE a schedule with a given name -- #7
-app.delete('/api/courses/schedules/:name', (req, res) => {
+app.delete('/api/secure/courses/schedules/:name', (req, res) => {
     const name = req.params.name;
     const schedName = scheduleNamesArray.find(p => p.scheduleName === name);
     if(!schedName)
@@ -179,7 +197,7 @@ app.delete('/api/courses/schedules/:name', (req, res) => {
 });
 
 // Route to GET a list of schedule names with the number of courses that are saved -- #8
-app.get('/api/courses/schedules', (req, res) => {
+app.get('/api/secure/courses/schedules', (req, res) => {
     const NamesOfSchedules = [];
     for (i = 0; i < scheduleNamesArray.length; i++) {
         NamesOfSchedules.push({
@@ -191,7 +209,7 @@ app.get('/api/courses/schedules', (req, res) => {
 });
 
 // Route to DELETE all schedules -- #9
-app.delete('/api/courses/schedules', (req, res) => {
+app.delete('/api/secure/courses/schedules', (req, res) => {
     scheduleNamesArray.splice(0, scheduleNamesArray.length);
     res.send(scheduleNamesArray);
 });
