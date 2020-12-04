@@ -1,13 +1,43 @@
 input {
     margin: 8px 0;
     border: none;
-    border: 1px solid #ccc;
+    border: 2px solid rgb(27, 2, 2);
     box-sizing: border-box;
     padding: 10px 10px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+label {
+    color: white;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
 }
 
 h1 {
     text-align: center;
     margin-top: 50px;
     font-weight: lighter;
+}
+
+.loginBtn {
+    align-content: center;
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+}
+
+.backBtn {
+    margin-top: 10px;
+}
+
+.form {
+    padding: 10px;
+    border-style: solid;
+    border-radius: 20px;
+    border-color: blueviolet;
+    background-color: rgb(127, 42, 206);
 }

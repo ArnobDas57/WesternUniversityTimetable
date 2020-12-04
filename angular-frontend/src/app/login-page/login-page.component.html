@@ -1,13 +1,42 @@
   <h1>Log Into Western Timetable</h1>
-  <div>
-    <label for="emailbox"><b>Email</b></label>
-    <input type="text" placeholder="Enter email" id="emailbox" required/>
-   
-    <label for="passwordbox"><b>Password</b></label>
-    <input type="text" placeholder="Enter password" id="passwordbox" required/>    
-   
-    <button type="submit">Login</button>
+  <div class="form">
+    <div>
+        <label for="emailbox"><b>Email</b></label>
+        <input type="text" placeholder="Enter email" id="emailbox" required/>
+    </div>
+    <div>
+        <label for="passwordbox"><b>Password</b></label>
+        <input type="text" placeholder="Enter password" id="passwordbox" required/>    
+    </div>    
+    <div class="loginBtn">
+        <button type="submit">Login</button>
+    </div>
+    <div>
+        <a (click)="activateNAC()">Click Here to Create New Account (NAC)</a>
+    </div>
   </div>
-  <div>
+
+  <div class="form2" *ngIf="this.indicater == true">
+    <h2>Create a New Account</h2>
+    <div>
+        <label for="userbox"><b>Username</b></label>
+        <input type="text" placeholder="Enter username" id="userbox" required/>
+    </div>
+    <div>
+        <label for="emailbox"><b>Email</b></label>
+        <input type="text" placeholder="Enter email" id="emailbox" required/>
+    </div>
+    <div>
+        <label for="passwordbox"><b>Password</b></label>
+        <input type="text" placeholder="Enter password" id="passwordbox" required/>    
+    </div>    
+    <div class="CreateAccountBtn">
+        <button type="submit">Create Account</button>
+    </div>
+  </div>
+
+  <div class="backBtn">
     <button (click)="goBack()">go back</button>
   </div>
+
+  

@@ -13,6 +13,8 @@ export class LoginPageComponent {
 
   constructor(public auth: AngularFireAuth, private location: Location, private route: ActivatedRoute) { }
 
+  private indicater = false;
+
   emailSignIn(email, password):void 
   {
     this.auth.signInWithEmailAndPassword(email, password)
@@ -22,7 +24,7 @@ export class LoginPageComponent {
       console.log(error)
     });
   }
-
+  
   getCurrentUserToken(): void {
     this.auth.currentUser.then((user) => {
       if (user) {
@@ -35,6 +37,10 @@ export class LoginPageComponent {
 
   goBack(): void {
     this.location.back();
+  }
+
+  activateNAC() {
+    this.indicater = true;
   }
   
 

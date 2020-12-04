@@ -10,6 +10,6 @@ h3 {
       text-align: center;
   }
 
-  nav:hover {
-      color: rgb(46, 89, 243);
+  nav:hover, a:hover {
+      color: rgb(46, 151, 243);
   }
