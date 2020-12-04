@@ -1,34 +1,42 @@
   <h1>Log Into Western Timetable</h1>
-  <div class="form">
-    <div>
-        <label for="emailbox"><b>Email</b></label>
-        <input type="text" placeholder="Enter email" id="emailbox" required/>
-    </div>
-    <div>
-        <label for="passwordbox"><b>Password</b></label>
-        <input type="text" placeholder="Enter password" id="passwordbox" required/>    
-    </div>    
-    <div class="loginBtn">
-        <button type="submit">Login</button>
-    </div>
-    <div>
-        <a (click)="activateNAC()">Click Here to Create New Account (NAC)</a>
-    </div>
+  <div class="form1">
+      <form>
+        <div>
+            <label for="email"><b>Email</b></label>
+            <input #emailField type="text" name="email" placeholder="Enter email" id="emailbox">
+        </div>
+        <div>
+            <label for="password"><b>Password</b></label>
+            <input #passwordField type="password" name="password" placeholder="Enter password" id="passwordbox">    
+        </div>    
+        <div class="loginBtn">
+            <button type="submit" (click)="emailSignIn(emailField.value, passwordField.value); getCurrentUserToken();">Login</button>
+        </div>
+        <div *ngIf="this.emptyEmail == true">
+            <a class="alert">Please enter an email</a>
+        </div>
+        <div *ngIf="this.emptyPassword == true">
+            <a class="alert">Please enter a password</a>
+        </div>
+        <div>
+            <a (click)="activateNAC()"><u>Click Here to Create New Account (NAC)</u></a>
+        </div>
+      </form>
   </div>
-
+      
   <div class="form2" *ngIf="this.indicater == true">
     <h2>Create a New Account</h2>
     <div>
         <label for="userbox"><b>Username</b></label>
-        <input type="text" placeholder="Enter username" id="userbox" required/>
+        <input type="text" placeholder="Enter username" id="userbox"/>
     </div>
     <div>
         <label for="emailbox"><b>Email</b></label>
-        <input type="text" placeholder="Enter email" id="emailbox" required/>
+        <input type="text" placeholder="Enter email" id="emailbox"/>
     </div>
     <div>
         <label for="passwordbox"><b>Password</b></label>
-        <input type="text" placeholder="Enter password" id="passwordbox" required/>    
+        <input type="text" placeholder="Enter password" id="passwordbox"/>    
     </div>    
     <div class="CreateAccountBtn">
         <button type="submit">Create Account</button>

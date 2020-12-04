@@ -23,7 +23,25 @@ h1 {
     font-weight: lighter;
 }
 
-.loginBtn {
+h2 {
+    text-align: center;
+    color: white;
+}
+
+a {
+    margin-top: 10px;
+    text-align: center;
+    color: white;
+    align-content: center;
+    margin: 0 auto;
+}
+
+a:hover {
+    cursor: pointer;
+    color: rgb(46, 151, 243);
+}
+
+.loginBtn, .CreateAccountBtn {
     align-content: center;
     text-align: center;
     margin: 0 auto;
@@ -34,10 +52,22 @@ h1 {
     margin-top: 10px;
 }
 
-.form {
+.form1 {
     padding: 10px;
     border-style: solid;
     border-radius: 20px;
-    border-color: blueviolet;
+    border-color: rgb(183, 178, 187);
     background-color: rgb(127, 42, 206);
+}
+
+.form2 {
+    padding: 10px;
+    border-style: solid;
+    border-radius: 20px;
+    border-color: rgb(183, 178, 187);
+    background-color: rgb(14, 103, 100);
+}
+
+.alert {
+    color: rgb(255, 80, 80);
 }

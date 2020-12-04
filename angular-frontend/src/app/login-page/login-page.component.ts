@@ -13,16 +13,27 @@ export class LoginPageComponent {
 
   constructor(public auth: AngularFireAuth, private location: Location, private route: ActivatedRoute) { }
 
-  private indicater = false;
+  public indicater = false;
+  public emptyEmail = false;
+  public emptyPassword = false;
 
   emailSignIn(email, password):void 
   {
-    this.auth.signInWithEmailAndPassword(email, password)
-    .then((user) => {
-      console.log(user);
-    }).catch((error) => {
-      console.log(error)
-    });
+    if(email == null || !(email.includes('@') && email.includes('.')) || password == null)
+    {
+      this.emptyEmail = true;
+      this.emptyPassword = true;
+    }
+
+    else 
+    {
+      this.auth.signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        console.log(user);
+      }).catch((error) => {
+        console.log(error)
+      });
+    }
   }
   
   getCurrentUserToken(): void {
