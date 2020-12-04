@@ -24,12 +24,14 @@ export class CourseSearchComponent implements OnInit {
   results2: any;
   results3a: any;
   results3b: any;
+  results4: any;
 
   getResults() {
     this.results = this.appcomponent.getResults();
     this.results2 = '';
     this.results3a = '';
     this.results3b = '';
+    this.results4 = '';
   }
 
   getResults2(subjectcode: string) {
@@ -37,6 +39,7 @@ export class CourseSearchComponent implements OnInit {
     this.results = '';
     this.results3a = '';
     this.results3b = '';
+    this.results4 = '';
   }
 
   getResults3a(subjectcode: string, catalognum: string) {
@@ -44,6 +47,7 @@ export class CourseSearchComponent implements OnInit {
     this.results2 = '';
     this.results = '';
     this.results3b = '';
+    this.results4 = '';
   }
 
   getResults3b(subjectcode: string, catalognum: string, ssrcomponent: string) {
@@ -51,5 +55,14 @@ export class CourseSearchComponent implements OnInit {
     this.results2 = '';
     this.results3a = '';
     this.results = '';
+    this.results4 = '';
+  } 
+
+  getResults4(catalognum: string, ssrcomponent: string) {
+    this.results4 = this.appcomponent.getResults4(catalognum, ssrcomponent);
+    this.results2 = '';
+    this.results3a = '';
+    this.results = '';
+    this.results3b = '';
   } 
 }

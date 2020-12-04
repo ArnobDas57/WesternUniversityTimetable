@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, HostBinding} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Location } from '@angular/common';
@@ -34,6 +34,11 @@ export class LoginPageComponent {
         console.log(error)
       });
     }
+  }
+  
+  loginGoogle() 
+  {
+     this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
   
   getCurrentUserToken(): void {

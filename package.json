@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "express": "^4.17.1",
-    "firebase-admin": "^9.4.1"
+    "firebase-admin": "^9.4.1",
+    "string-similarity": "^4.0.3"
   }
 }

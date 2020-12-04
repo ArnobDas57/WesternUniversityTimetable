@@ -18,7 +18,10 @@
         <div *ngIf="this.emptyPassword == true">
             <a class="alert">Please enter a password</a>
         </div>
-        <div>
+        <div class="GoogleLogin">
+           <a (click)="loginGoogle()" class="Google">Login with Google</a> 
+        </div>
+        <div class="NAC">
             <a (click)="activateNAC()"><u>Click Here to Create New Account (NAC)</u></a>
         </div>
       </form>

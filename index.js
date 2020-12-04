@@ -3,7 +3,10 @@ const app = express();
 var admin = require('firebase-admin');
 var serviceAccount = require(process.cwd() + "/se3316-lab5-firebase-firebase-adminsdk-5cvel-eebff759f3.json");
 var defaultApp = admin.initializeApp({credential: admin.credential.cert(serviceAccount)});
+var stringSimilarity = require('string-similarity');
+
 const port = 3000;
+
 
 app.use(express.json());
 

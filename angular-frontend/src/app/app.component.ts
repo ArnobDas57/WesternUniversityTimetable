@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Result, Result2, Result3a, Result3b, Quantity, SavedSchedule } from './result';
+import { Result, Result2, Result3a, Result3b, Result4, Quantity, SavedSchedule } from './result';
 import { Schedule, CourseList } from './schedule';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,6 +18,7 @@ export class AppComponent {
   results2: Observable<Result2[]>;
   results3a: Observable<Result3a[]>;
   results3b: Observable<Result3b[]>;
+  results4: Observable<Result4[]>;
   quantity: any;
   newSchedule;
   courseList;
@@ -32,23 +33,28 @@ export class AppComponent {
   };
 
   getResults() {
-    this.results = this.http.get<Result[]>(this.ROOT_URL + '/courses');
+    this.results = this.http.get<Result[]>(this.ROOT_URL + '/open/courses');
     return this.results;
   }
 
   getResults2(subjectcode: string) {
-    this.results2 = this.http.get<Result2[]>(this.ROOT_URL + `/courses/subjects/${subjectcode}`);
+    this.results2 = this.http.get<Result2[]>(this.ROOT_URL + `/open/courses/subjects/${subjectcode}`);
     return this.results2;
   }
 
   getResults3a(subjectcode: string, catalognum: string) {
-    this.results3a = this.http.get<Result3a[]>(this.ROOT_URL + `/courses/subjects/${subjectcode}/${catalognum}`);
+    this.results3a = this.http.get<Result3a[]>(this.ROOT_URL + `/open/courses/subjects/${subjectcode}/${catalognum}`);
     return this.results3a;
   }
 
   getResults3b(subjectcode: string, catalognum: string, ssrcomponent: string) {
-    this.results3b = this.http.get<Result3b[]>(this.ROOT_URL + `/courses/subjects/${subjectcode}/${catalognum}/${ssrcomponent}`);
+    this.results3b = this.http.get<Result3b[]>(this.ROOT_URL + `/open/courses/subjects/${subjectcode}/${catalognum}/${ssrcomponent}`);
     return this.results3b;
+  }
+
+  getResults4(catalognum: string, ssrcomponent: string) {
+    this.results4 = this.http.get<Result4[]>(this.ROOT_URL + `/open/courses/subjects/${catalognum}/${ssrcomponent}`);
+    return this.results4;
   }
 
   createSched(name: string, amount: number) {
