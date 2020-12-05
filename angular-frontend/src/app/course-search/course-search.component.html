@@ -31,13 +31,28 @@
     </div>
 
     <div *ngIf="searchBox1.value && searchBox2.value && searchBox3.value">
-      <button (click)="getResults3b(searchBox1.value, searchBox2.value, searchBox3.value)">
+      <button (click)="getResults3b(searchBox1.value, searchBox2.value.toUpperCase(), searchBox3.value.toUpperCase())">
         Search
       </button>
     </div>
 
-    <div *ngIf="searchBox2.value && searchBox3.value">
-        <button (click)="getResults4(searchBox2.value.toUpperCase(), searchBox3.value.toUpperCase())">
+    <div *ngIf="!searchBox1.value && searchBox2.value && !searchBox3.value">
+        <button (click)="getResults4(searchBox2.value.toUpperCase())">
+          Search
+        </button>
+    </div>
+</div>
+
+<h3>Search Timetable by:</h3>
+
+<div id="kw-search">
+    <h4>
+      <label for="kw-box">Keyword: </label>
+      <input #keywordBox placeholder="Keyword" id="kw-box" (input)="search(keywordBox.value)"/>
+    </h4>
+
+    <div>
+        <button (click)="keywordSearch(keywordBox.value.toUpperCase())">
           Search
         </button>
       </div>
@@ -45,7 +60,7 @@
 
 <div>
     <ul class="search-result">
-      <li *ngFor="let result of results | async" >
+      <li *ngFor="let result of results | async">
         <table>
           <tr>
             <td> Subject </td>
@@ -62,8 +77,8 @@
 
 <div>
   <ul class="search-result">
-    <li *ngFor="let result2 of results2 | async" >
-      <h5>{{ result2.subject }} {{ result2.catalog_nbr }} - {{ result2.className }}</h5>
+    <li *ngFor="let result2 of results2 | async">
+      <h5 (click)="expand()">{{ result2.subject }} {{ result2.catalog_nbr }} - {{ result2.className }}</h5>
       <span>{{ result2.description }}</span>
       <table>
         <tr>
@@ -89,6 +104,9 @@
           <td>{{ result2.course_info[0].enrl_stat }}</td>
         </tr>
       </table>
+      <div *ngIf="this.temp == true" class="collapse" (click)="condense()">
+        <p>ngnetenetnnten</p>
+      </div>
     </li>
   </ul>
 </div>
@@ -96,7 +114,7 @@
 <div>
   <ul class="search-result">
     <li *ngFor="let result3a of results3a | async" >
-      <h5>{{ result3a.subject }} {{ result3a.catalog_nbr }} - {{ result3a.className }}</h5>
+      <h5 (click)="expand()">{{ result3a.subject }} {{ result3a.catalog_nbr }} - {{ result3a.className }}</h5>
       <span>{{ result3a.catalog_description }}</span>
       <table>
         <tr>
@@ -122,6 +140,9 @@
           <td>{{ result3a.course_info[0].enrl_stat }}</td>
         </tr>
       </table>
+      <div *ngIf="this.temp == true" class="collapse" (click)="condense()">
+        <p>ngnetenetnnten</p>
+      </div>
     </li>
   </ul>
 </div>
@@ -129,7 +150,7 @@
 <div>
   <ul class="search-result">
     <li *ngFor="let result3b of results3b | async" >
-      <h5 class="s1">{{ result3b.subject }} {{ result3b.catalog_nbr }} - {{ result3b.className }}</h5>
+      <h5 (click)="expand()">{{ result3b.subject }} {{ result3b.catalog_nbr }} - {{ result3b.className }}</h5>
       <span>{{ result3b.catalog_description }}</span>
       <table>
         <tr>
@@ -155,6 +176,9 @@
           <td>{{ result3b.course_info[0].enrl_stat }}</td>
         </tr>
       </table>
+      <div *ngIf="this.temp == true" class="collapse" (click)="condense()">
+        <p>ngnetenetnnten</p>
+      </div>
     </li>
   </ul>
 </div>
@@ -162,8 +186,8 @@
 <div>
     <ul class="search-result">
       <li *ngFor="let result4 of results4 | async" >
-        <h5>{{ result4.subject }} {{ result4.catalog_nbr }} - {{ result4.className }}</h5>
-        <span>{{ result4.description }}</span>
+        <h5 (click)="expand()">{{ result4.subject }} {{ result4.catalog_nbr }} - {{ result4.className }}</h5>
+        <span>{{ result4.catalog_description }}</span>
         <table>
           <tr>
             <td> Section </td>
@@ -188,6 +212,45 @@
             <td>{{ result4.course_info[0].enrl_stat }}</td>
           </tr>
         </table>
+        <div *ngIf="this.temp == true" class="collapse" (click)="condense()">
+            <p>ngnetenetnnten</p>
+        </div>
       </li>
     </ul>
-  </div>
+</div>
+
+<div>
+    <ul class="search-result">
+      <li *ngFor="let kwresult of kwResults | async" >
+        <h5 (click)="expand()">{{ kwresult.subject }} {{ kwresult.catalog_nbr }} - {{ kwresult.className }}</h5>
+        <span>{{ kwresult.catalog_description }}</span>
+        <table>
+          <tr>
+            <td> Section </td>
+            <td> Component </td>
+            <td> Class Number </td>
+            <td> Days </td>
+            <td> Start Time </td>
+            <td> End Time </td>
+            <td> Campus </td>
+            <td> Instructor </td>
+            <td> Status </td>
+          </tr>
+          <tr>
+            <td>{{ kwresult.course_info[0].class_section }}</td>
+            <td>{{ kwresult.course_info[0].ssr_component }}</td>
+            <td>{{ kwresult.course_info[0].class_nbr }}</td>
+            <td>{{ kwresult.course_info[0].days }}</td>
+            <td>{{ kwresult.course_info[0].start_time }}</td>
+            <td>{{ kwresult.course_info[0].end_time }}</td>
+            <td>{{ kwresult.course_info[0].campus }}</td>
+            <td>{{ kwresult.course_info[0].instructors }}</td>
+            <td>{{ kwresult.course_info[0].enrl_stat }}</td>
+          </tr>
+        </table>
+        <div *ngIf="this.temp == true" class="collapse" (click)="condense()">
+            <p>ngnetenetnnten</p>
+        </div>
+      </li>
+    </ul>
+</div>

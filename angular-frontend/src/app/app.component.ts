@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Result, Result2, Result3a, Result3b, Result4, Quantity, SavedSchedule } from './result';
+import { Result, Result2, Result3a, Result3b, Result4, Result5, Quantity, SavedSchedule } from './result';
 import { Schedule, CourseList } from './schedule';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,6 +19,7 @@ export class AppComponent {
   results3a: Observable<Result3a[]>;
   results3b: Observable<Result3b[]>;
   results4: Observable<Result4[]>;
+  kwResults: Observable<Result5[]>;
   quantity: any;
   newSchedule;
   courseList;
@@ -31,6 +32,11 @@ export class AppComponent {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
+
+  keywordSearch(keyword: string) {
+    this.kwResults = this.http.get<Result[]>(this.ROOT_URL + `/open/courses/subjects/keywords/${keyword}`);
+    return this.kwResults;
+  }
 
   getResults() {
     this.results = this.http.get<Result[]>(this.ROOT_URL + '/open/courses');
@@ -52,8 +58,8 @@ export class AppComponent {
     return this.results3b;
   }
 
-  getResults4(catalognum: string, ssrcomponent: string) {
-    this.results4 = this.http.get<Result4[]>(this.ROOT_URL + `/open/courses/subjects/${catalognum}/${ssrcomponent}`);
+  getResults4(catalognum: string) {
+    this.results4 = this.http.get<Result4[]>(this.ROOT_URL + `/open/courses/subjects/numberAndComponent/${catalognum}`);
     return this.results4;
   }
 

@@ -53,11 +53,14 @@ a:hover {
 }
 
 .form1 {
+    width: 50%;
+    margin: 0 auto;
     padding: 10px;
     border-style: solid;
     border-radius: 20px;
     border-color: rgb(183, 178, 187);
     background-color: rgb(127, 42, 206);
+    margin-bottom: 20px;
 }
 
 .Google {
@@ -93,6 +96,8 @@ a:hover {
 }
 
 .form2 {
+    width: 50%;
+    margin: 0 auto;
     padding: 10px;
     border-style: solid;
     border-radius: 20px;

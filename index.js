@@ -84,7 +84,8 @@ app.get('/api/open/courses/subjects/:subject/:catalog_nbr/:ssr_component', (req,
     for(i = 0; i < courseData.length; i++) {
         if (String(courseData[i].subject).includes(`${req.params.subject}`) 
             && String(courseData[i].catalog_nbr).includes(`${req.params.catalog_nbr}`)
-            && String(courseData[i].course_info[0].ssr_component).includes(`${req.params.ssr_component}`)) {
+            && String(courseData[i].course_info[0].ssr_component).includes(`${req.params.ssr_component}`))
+        {
             ttEntry.push(courseData[i]);
         }
     }
@@ -98,11 +99,31 @@ app.get('/api/open/courses/subjects/:subject/:catalog_nbr/:ssr_component', (req,
 });
 
 // Route to GET timetable entry with course and component
-app.get('/api/open/courses/subjects/:catalog_nbr/:ssr_component', (req, res) => {
+app.get('/api/open/courses/subjects/numberAndComponent/:catalog_nbr', (req, res) => {
     const ttEntry = [];
     for(i = 0; i < courseData.length; i++) {
-        if (String(courseData[i].catalog_nbr).includes(`${req.params.catalog_nbr}`)
-            && String(courseData[i].course_info[0].ssr_component).includes(`${req.params.ssr_component}`)) {
+        if (String(courseData[i].catalog_nbr).includes(`${req.params.catalog_nbr}`)) 
+        {
+            ttEntry.push(courseData[i]);
+        }
+    }
+    if (ttEntry.length > 0) {
+        res.send(ttEntry);
+    }
+    // 404 subject code doesn't exist
+    else {
+        res.status(404).send('The timetable entry was not found');
+    }
+});
+
+// Route to GET timetable entry with course and component
+app.get('/api/open/courses/subjects/keywords/:keyword)', (req, res) => {
+    const ttEntry = [];
+    for(i = 0; i < courseData.length; i++) {
+        if (String(courseData[i].subject).includes(`${req.params.keyword}`) 
+            || String(courseData[i].className).includes(`${req.params.keyword}`)
+            || String(courseData[i].catalog_nbr).includes(`${req.params.keyword}`)) 
+        {
             ttEntry.push(courseData[i]);
         }
     }

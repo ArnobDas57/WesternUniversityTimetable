@@ -40,6 +40,14 @@
     display:inline-block;
   }
 
+  #collapse {
+      display: none;
+  }
+
+  #collapse:target {
+    display: block;
+  }
+
   input {
     margin-right: 20px;
   }
