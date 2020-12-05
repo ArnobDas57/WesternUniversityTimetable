@@ -37,7 +37,7 @@ export class CourseSearchComponent implements OnInit {
 
     if(((keyword.trim()).replace(/\s/g, '')).length >= 4)
     {
-      this.kwResults = this.appcomponent.keywordSearch(keyword);
+      this.kwResults = this.appcomponent.keywordSearch(((keyword.trim()).replace(/\s/g, '')));
     }
   }
 

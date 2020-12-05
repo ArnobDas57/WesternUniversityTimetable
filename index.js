@@ -115,14 +115,14 @@ app.get('/api/open/courses/subjects/numberAndComponent/:catalog_nbr', (req, res)
         res.status(404).send('The timetable entry was not found');
     }
 });
-
+((keyword.trim()).replace(/\s/g, ''))
 // Route to GET timetable entry with course and component
 app.get('/api/open/courses/subjects/keywords/:keyword)', (req, res) => {
     const ttEntry = [];
     for(i = 0; i < courseData.length; i++) {
-        if (String(courseData[i].subject).includes(`${req.params.keyword}`) 
-            || String(courseData[i].className).includes(`${req.params.keyword}`)
-            || String(courseData[i].catalog_nbr).includes(`${req.params.keyword}`)) 
+        if (((String(courseData[i].subject).trim()).replace(/\s/g, '')).includes(`${req.params.keyword}`) 
+            || ((String(courseData[i].className).trim()).replace(/\s/g, '')).includes(`${req.params.keyword}`)
+            || ((String(courseData[i].catalog_nbr).trim()).replace(/\s/g, '')).includes(`${req.params.keyword}`)) 
         {
             ttEntry.push(courseData[i]);
         }
