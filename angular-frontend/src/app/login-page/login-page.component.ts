@@ -1,6 +1,7 @@
 import { Component, HostBinding} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AppComponent } from '../app.component';
 import { Location } from '@angular/common';
 import firebase from 'firebase/app';
 import { Observable, Subject } from 'rxjs';
@@ -12,7 +13,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class LoginPageComponent {
 
-  constructor(public auth: AngularFireAuth, private location: Location, private route: ActivatedRoute) { }
+  constructor(private appcomponent: AppComponent, public auth: AngularFireAuth, private location: Location, private route: ActivatedRoute) { }
 
   private searchTerms = new Subject<string>();
 
@@ -36,9 +37,13 @@ export class LoginPageComponent {
   public incorrectLogin = false;
   public correctCreation = false;
   public incorrectCreation = false;
+  public googleIn = false;
+  public userId;
 
   public errormessage1: string;
   public errormessage2: string;
+  public errormessage3: string;
+  
 
   emailSignIn(email: string, password: string)
   {
@@ -141,9 +146,12 @@ export class LoginPageComponent {
       this.emptyEmail2 = false;
       this.emptyPassword2 = false;
 
+      // api call checking if username already exists
+
       this.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
         console.log(user);
+        // api call sending username, and email 
         this.correctCreation = true;
         this.incorrectCreation = false;
       }).catch((error) => {
@@ -179,8 +187,14 @@ export class LoginPageComponent {
   loginGoogle() 
   {
      this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-     .then(() => console.log('successful authentication'))
-     .catch(error => console.log(error));
+     .then(() => { 
+       console.log('successful authentication');
+       this.googleIn = true;
+    }).catch(error => {
+      console.log(error);
+      this.googleIn = false;
+      this.errormessage3 = error.message;
+    });
   }
   
   getCurrentUserToken(): void {

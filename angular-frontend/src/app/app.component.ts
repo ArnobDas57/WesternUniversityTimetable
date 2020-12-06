@@ -5,6 +5,10 @@ import { Result, Result2, Result3a, Result3b, Result4, Result5, Quantity, SavedS
 import { Schedule, CourseList } from './schedule';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Location } from '@angular/common';
+import firebase from 'firebase/app';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +34,7 @@ export class AppComponent {
   constructor(private http: HttpClient) {}
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json'})
   };
 
   keywordSearch(keyword: string) {
@@ -63,10 +67,14 @@ export class AppComponent {
     return this.results4;
   }
 
-  createSched(name: string, amount: number) {
+  createSched(name: string, amount: number, token: any) {
    const data = {
      scheduleName: name
     }
+
+    this.httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token})
+    };
 
    this.newSchedule = this.http.post(this.ROOT_URL + '/secure/courses/schedules', data, this.httpOptions).toPromise().then(e => {
      console.log(e);

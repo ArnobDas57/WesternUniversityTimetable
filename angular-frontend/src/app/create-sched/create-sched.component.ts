@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Location } from '@angular/common';
+import firebase from 'firebase/app';
 import { Observable, Subject } from 'rxjs';
 import { AppComponent } from '../app.component';
 
@@ -12,7 +15,7 @@ import { AppComponent } from '../app.component';
 export class CreateSchedComponent implements OnInit {
   private searchTerms = new Subject<string>();
 
-  constructor(private appcomponent: AppComponent) { }
+  constructor(private appcomponent: AppComponent, public auth: AngularFireAuth, private location: Location, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
@@ -29,11 +32,22 @@ export class CreateSchedComponent implements OnInit {
   Schedule = [];
 
   add(schedName: string, amount: number) {
-    this.quantity = [];
-    this.num = this.appcomponent.createSched(schedName, amount);
-    for(let i = 1; i <= this.num; i++) {
-    this.quantity.push(i);
-    }
+    this.auth.currentUser.then((user) => {
+      if (user) {
+        user.getIdToken(true).then(token => {
+
+          this.quantity = [];
+          for(let i = 1; i <= this.num; i++) 
+          {
+            this.quantity.push(i);
+          }
+          
+          this.num = this.appcomponent.createSched(schedName, amount, token);
+      });
+      } else {
+        console.log("No user signed in");
+      }
+    });
   }
 
   addCourses(schedName: string) {
@@ -46,4 +60,5 @@ export class CreateSchedComponent implements OnInit {
     this.CCList = [];
     this.Schedule = [];
   }
+  
 }

@@ -149,24 +149,106 @@ app.get('/api/open/courses/subjects/:subject/:catalog_nbr', (req, res) => {
 // Array of schedule objects
 const scheduleNamesArray = [];
 
-// Route to create new schedule with given schedule name using POST -- #4
-app.post('/api/secure/courses/schedules', (req, res) => {
-    const NewName = req.body.scheduleName;
-    const schedName = scheduleNamesArray.find(p => p.scheduleName === NewName);
-    if(schedName) {
-    res.status(400).send('Schedule name already exists');
+// Array of users
+const userNames = [];
+
+app.post('/api/secure/users', (req, res) => {
+    authHeader = req.header('Authorization');
+
+    if(authHeader) {
+        const bearer = authHeader.split(' ');
+        const token = bearer[1];
+
+        admin.auth().verifyIdToken(token)
+        .then((decodedToken) => {
+            console.log(decodedToken);
+            
+            const NewUser = req.body.userName;
+            const UserEmail = req.body.email;
+            const userName = userNames.find(p => p.userName === NewUser);
+            if(userName) {
+            res.status(400).send('Username already exists');
+            res.send("Username already exists");
+            }
+            else if(!userName && String(NewUser).length < 10) {
+            const temp = [];
+
+            userNames.push({
+                "userName": String(NewUser),
+                "email": String(UserEmail),
+                "scheduleNamesArray": []
+            });
+
+            for(i = 0; i < userNames.length; i++)
+            {
+                temp[i] = userNames[i].userName;
+            }    
+
+            res.send(temp);
+            }
+
+        }).catch((error) => {
+            console.log(error);
+        });
     }
-    else if(!schedName && String(NewName).length < 20) {
-    scheduleNamesArray.push({
-        "scheduleName": String(NewName),
-        "codePairsList": []
-    });
-    res.send(scheduleNamesArray);
+});
+
+// Route to create new schedule with given schedule name using POST -- #4
+app.post('/api/secure/courses/users/:userEmail/schedules', (req, res) => {
+    authHeader = req.header('Authorization');
+
+    if(authHeader) {
+        const bearer = authHeader.split(' ');
+        const token = bearer[1];
+
+        admin.auth().verifyIdToken(token)
+        .then((decodedToken) => {
+            console.log(decodedToken);
+
+            const NewName = req.body.scheduleName;
+            const NewDescription = req.body.optionalDescription;
+            const NewVisibility = req.body.visibility;
+            const schedName = false;
+            const result = [];
+
+            for(i = 0; i < userNames.length; i++)
+            {
+                if(userNames[i].email == req.params.userEmail)
+                {
+                    for(j = 0; j < userNames[i].scheduleNamesArray.length; j++)
+                    {
+                        if(userNames[i].scheduleNamesArray[j] == NewName)
+                        {
+                            schedName = true;
+                        }
+                    }
+                }
+            }
+
+            if(schedName == true) {
+            res.status(400).send('Schedule name already exists');
+            }
+            else if((schedName == false) && String(NewName).length < 20) {
+                for(i = 0; i < userNames.length; i++)
+                {
+                    if(userNames[i].email == req.params.userEmail)
+                    {
+                        userNames[i].scheduleNamesArray.push({"scheduleName": String(NewName), "codePairsList": [], "description": NewDescription, "visibility":  NewVisibility});
+                        result = userNames[i].scheduleNamesArray;
+                    }
+                }
+
+                res.send(result);
+            }
+
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 });
 
 // Route to save a list of subject code, course code pairs under schedule name -- #5
-app.put('/api/secure/courses/schedules/:name', (req, res) => {
+app.put('/api/secure/courses/users/:userEmail/schedules/:name', (req, res) => {
     const name = req.params.name;
     const schedName = scheduleNamesArray.find(p => p.scheduleName === name);
     if(!schedName) {

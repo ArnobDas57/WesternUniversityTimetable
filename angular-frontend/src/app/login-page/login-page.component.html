@@ -1,16 +1,16 @@
   <h1>Log Into Western Timetable</h1>
   <div class="form1">
       <form>
-        <h2>Login With User Credentials</h2>
-        <div>
+        <h2 *ngIf="this.googleIn == false">Login With User Credentials</h2>
+        <div *ngIf="this.googleIn == false">
             <label for="email"><b>Email</b></label>
             <input #emailField type="text" name="email" placeholder="Enter email" id="emailbox" (input)="search(emailField.value)">
         </div>
-        <div>
+        <div *ngIf="this.googleIn == false">
             <label for="password"><b>Password</b></label>
             <input #passwordField type="password" name="password" placeholder="Enter password" id="passwordbox" (input)="search(passwordField.value)">    
         </div>    
-        <div *ngIf="this.correctLogin == false" class="loginBtn">
+        <div *ngIf="this.correctLogin == false && this.googleIn == false" class="loginBtn">
             <button (click)="emailSignIn(emailField.value, passwordField.value); emailField.value=''; passwordField.value=''">Login</button>
         </div>
         <div *ngIf="this.emptyEmail == true">
@@ -28,13 +28,16 @@
         <div *ngIf="this.incorrectLogin == true && this.correctLogin == false">
             <a class="failure">{{ this.errormessage1 }}</a>
         </div>
-        <div *ngIf="this.correctLogin == false" class="GoogleLogin">
+        <div *ngIf="this.correctLogin == false && this.googleIn == false" class="GoogleLogin">
            <a (click)="loginGoogle()" class="Google">Login with Google</a> 
+        </div>
+        <div *ngIf="this.googleIn == true">
+            <a class="success">You have successfully logged in with Google</a>
         </div>
         <div *ngIf="this.correctLogin == true && this.incorrectLogin == false" class="Update">
             <a (click)="activateNewPassword()"><u>Click here to Update Password</u></a>
         </div>
-        <div *ngIf="this.correctLogin == false" class="NAC">
+        <div *ngIf="this.correctLogin == false && this.googleIn == false" class="NAC">
             <a (click)="activateNAC()"><u>Click here to Create New Account (NAC)</u></a>
         </div>
       </form>
