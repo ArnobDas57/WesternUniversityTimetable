@@ -31,7 +31,7 @@ export class CreateSchedComponent implements OnInit {
   CCList = [];
   Schedule = [];
 
-  add(schedName: string, amount: number) {
+  add(schedName: string, amount: number, desc: string, vis: string) {
     this.auth.currentUser.then((user) => {
       if (user) {
         user.getIdToken(true).then(token => {
@@ -42,7 +42,7 @@ export class CreateSchedComponent implements OnInit {
             this.quantity.push(i);
           }
           
-          this.num = this.appcomponent.createSched(schedName, amount, token);
+          this.num = this.appcomponent.createSched(schedName, amount, desc, vis, token);
       });
       } else {
         console.log("No user signed in");
@@ -51,14 +51,32 @@ export class CreateSchedComponent implements OnInit {
   }
 
   addCourses(schedName: string) {
-    for(let i = 0; i < this.quantity.length; i++)
-    {
-      this.Schedule[i] = {subject: this.SubjectList[i], catalog_nbr: this.CCList[i] } 
+    this.auth.currentUser.then((user) => {
+      if (user) {
+        user.getIdToken(true).then(token => {
+            const email = user.email;            
+
+            for(let i = 0; i < this.quantity.length; i++)
+            {
+              this.Schedule[i] = {subject: this.SubjectList[i], catalog_nbr: this.CCList[i] } 
+            }
+            this.appcomponent.AddCourses(this.Schedule, schedName, token);
+            this.SubjectList = [];
+            this.CCList = [];
+            this.Schedule = [];
+            
+      });
+    } else {
+      console.log("No user signed in");
     }
-    this.appcomponent.AddCourses(this.Schedule, schedName);
-    this.SubjectList = [];
-    this.CCList = [];
-    this.Schedule = [];
-  }
-  
+  });
+}
+
+
+
+
+
+
+
+
 }

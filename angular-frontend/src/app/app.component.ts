@@ -28,6 +28,7 @@ export class AppComponent {
   newSchedule;
   courseList;
   savedSchedules: Observable<SavedSchedule[]>;
+  allSchedules: Observable<SavedSchedule[]>;
 
   ROOT_URL = '/api';
 
@@ -67,29 +68,58 @@ export class AppComponent {
     return this.results4;
   }
 
-  createSched(name: string, amount: number, token: any) {
+  createSched(name: string, amount: number, desc: string, vis: string, email: string, token: any) {
    const data = {
-     scheduleName: name
+     scheduleName: name,
+     optionalDescription: desc,
+     visibility: vis
     }
 
     this.httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token})
     };
 
-   this.newSchedule = this.http.post(this.ROOT_URL + '/secure/courses/schedules', data, this.httpOptions).toPromise().then(e => {
+    this.newSchedule = this.http.post(this.ROOT_URL + `/secure/courses/users/${email}/schedules`, data, this.httpOptions).toPromise().then(e => {
      console.log(e);
    }); 
    return amount;
   }
 
-  AddCourses(courses: any, schedName: string) {
-    this.http.put(this.ROOT_URL + `/secure/courses/schedules/${schedName}`, courses, this.httpOptions).toPromise().then(e => {
+  AddCourses(courses: any, schedName: string, email: string, token: any) {
+    this.httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token})
+    };
+
+    this.http.put(this.ROOT_URL + `/secure/courses/users/${email}/schedules/${schedName}`, courses, this.httpOptions).toPromise().then(e => {
       console.log(e);
     });
   }
 
-  getSchedules(scheduleName: any) {
-    this.savedSchedules = this.http.get<SavedSchedule[]>(this.ROOT_URL + `/secure/courses/schedules/${scheduleName}`);
+  GetScheduleInfo(schedName: string, email: string, token: any) {
+    this.httpOptions = {
+      headers: new HttpHeaders({'Authorization': 'Bearer ' + token})
+    };
+
+    this.savedSchedules = this.http.get<SavedSchedule[]>(this.ROOT_URL + `/secure/courses/users/${email}/schedules/${schedName}`, this.httpOptions)
     return this.savedSchedules;
+  }
+
+  DeleteSchedule(schedName: string, email: string, token: any) {
+    this.httpOptions = {
+      headers: new HttpHeaders({'Authorization': 'Bearer ' + token})
+    };
+
+    this.http.delete(this.ROOT_URL + `/secure/courses/users/${email}/schedules/${schedName}`, this.httpOptions).toPromise().then(e => {
+      console.log(e);
+    }); 
+  }
+
+  GetUserSchedules(email: string, token: any) {
+  this.httpOptions = {
+    headers: new HttpHeaders({'Authorization': 'Bearer ' + token})
+  };
+
+  this.allSchedules = this.http.get<SavedSchedule[]>(this.ROOT_URL + `/secure/courses/users/${email}/schedules`, this.httpOptions)
+  return this.allSchedules;
   }
 }
