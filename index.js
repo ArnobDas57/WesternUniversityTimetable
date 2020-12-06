@@ -217,7 +217,7 @@ app.post('/api/secure/courses/users/:userEmail/schedules', (req, res) => {
                 {
                     for(j = 0; j < userNames[i].scheduleNamesArray.length; j++)
                     {
-                        if(userNames[i].scheduleNamesArray[j] == NewName)
+                        if(userNames[i].scheduleNamesArray[j].scheduleName == NewName)
                         {
                             schedName = true;
                         }
@@ -249,64 +249,240 @@ app.post('/api/secure/courses/users/:userEmail/schedules', (req, res) => {
 
 // Route to save a list of subject code, course code pairs under schedule name -- #5
 app.put('/api/secure/courses/users/:userEmail/schedules/:name', (req, res) => {
-    const name = req.params.name;
-    const schedName = scheduleNamesArray.find(p => p.scheduleName === name);
-    if(!schedName) {
-        res.status(404).send('Schedule name does not exist');
-    }
-    else if(schedName && String(name).length < 20) {
-        schedName.codePairsList = req.body;
-        for(i = 0; i < schedName.codePairsList.length; i++){
-            for(j = 0; j < courseData.length; j++){
-                if (String(courseData[j].subject).includes(`${schedName.codePairsList[i].subject}`)
-                && String(courseData[j].catalog_nbr).includes(`${schedName.codePairsList[i].catalog_nbr}`)) {
-                    schedName.codePairsList[i].className = courseData[j].className;
-                    schedName.codePairsList[i].course_info = courseData[j].course_info;
-                    schedName.codePairsList[i].description = courseData[j].catalog_description;
+    
+    authHeader = req.header('Authorization');
+
+    if(authHeader) {
+        const bearer = authHeader.split(' ');
+        const token = bearer[1];
+
+        admin.auth().verifyIdToken(token)
+        .then((decodedToken) => {
+            console.log(decodedToken);
+            
+            const name = req.params.name;
+            const newName = req.params.newName;
+            const NewDescription = req.body.optionalDescription;
+            const NewVisibility = req.body.visibility;
+            const codePairsList = req.body.codePairsList;
+            const result = [];
+
+    for(i = 0; i < userNames.length; i++)
+            {
+                if(userNames[i].email == req.params.userEmail)
+                {
+                    for(j = 0; j < userNames[i].scheduleNamesArray.length; j++)
+                    {
+                        if(userNames[i].scheduleNamesArray[j].scheduleName == name)
+                        {
+                            schedName = true;
+                        }
+                    }
                 }
             }
-        }
-        res.send(schedName);
-    }
-});
 
-// Route to GET list of subject code, course code pairs for given schedule -- #6
-app.get('/api/secure/courses/schedules/:name', (req, res) => {
-    const name = req.params.name;
-    const schedName = scheduleNamesArray.find(p => p.scheduleName === name);
-    if(!schedName) {
+    if(schedName == false) {
         res.status(404).send('Schedule name does not exist');
     }
-    else if(schedName && String(name).length < 20) {
-        res.send(schedName.codePairsList);
+    else if((schedName == true) && String(name).length < 20) {
+        
+        for(i = 0; i < userNames.length; i++)
+            {
+                if(userNames[i].email == req.params.userEmail)
+                {
+                    for(j = 0; j < userNames[i].scheduleNamesArray.length; j++)
+                    {
+                        if(userNames[i].scheduleNamesArray[j].scheduleName == name)
+                        {
+                            userNames[i].scheduleNamesArray[j].scheduleName = newName;
+                            userNames[i].scheduleNamesArray[j].visibility = NewVisibility;
+                            userNames[i].scheduleNamesArray[j].description = NewDescription;
+                            userNames[i].scheduleNamesArray[j].scheduleName = newName;
+                            userNames[i].scheduleNamesArray[j].codePairsList = codePairsList;
+
+                            for(i1 = 0; i1 < codePairsList.length; i1++){
+                                for(j1 = 0; j1 < courseData.length; j1++){
+                                    if (String(courseData[j1].subject).includes(`${codePairsList[i1].subject}`)
+                                    && String(courseData[j1].catalog_nbr).includes(`${codePairsList[i1].catalog_nbr}`)) {
+                                        codePairsList[i1].className = courseData[j1].className;
+                                        codePairsList[i1].course_info = courseData[j1].course_info;
+                                        codePairsList[i1].description = courseData[j1].catalog_description;
+                                    }
+                                }
+                            }
+
+                            userNames[i].scheduleNamesArray[j].codePairsList = codePairsList;
+                            result = userNames[i].scheduleNamesArray[j].codePairsList;
+
+                        }
+                    }
+                }
+            }
+        
+        res.send(result);
+    }
+            
+
+        }).catch((error) => {
+            console.log(error);
+        });
+    } 
+});
+
+// Route to GET list of all info for given schedule -- #6
+app.get('/api/secure/courses/users/:userEmail/schedules/:name', (req, res) => {
+        
+    authHeader = req.header('Authorization');
+
+    if(authHeader) {
+        const bearer = authHeader.split(' ');
+        const token = bearer[1];
+
+        admin.auth().verifyIdToken(token)
+        .then((decodedToken) => {
+            console.log(decodedToken);
+            
+            const NewName = req.params.name;
+            const schedName = false;
+            const result = [];
+
+            for(i = 0; i < userNames.length; i++)
+            {
+                if(userNames[i].email == req.params.userEmail)
+                {
+                    for(j = 0; j < userNames[i].scheduleNamesArray.length; j++)
+                    {
+                        if(userNames[i].scheduleNamesArray[j].scheduleName == NewName)
+                        {
+                            schedName = true;
+                        }
+                    }
+                }
+            }
+
+            if(schedName == false) {
+                res.status(404).send('Schedule name does not exist');
+            }
+            else if(schedName == true) {
+                for(i = 0; i < userNames.length; i++)
+                {
+                    if(userNames[i].email == req.params.userEmail)
+                    {
+                        for(j = 0; j < userNames[i].scheduleNamesArray.length; j++)
+                        {
+                            if(userNames[i].scheduleNamesArray[j].scheduleName == NewName)
+                            {
+                                result = userNames[i];
+                            }
+                        }
+                    }
+                }
+
+                res.send(result);
+        }
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 });
 
 // Route to DELETE a schedule with a given name -- #7
-app.delete('/api/secure/courses/schedules/:name', (req, res) => {
-    const name = req.params.name;
-    const schedName = scheduleNamesArray.find(p => p.scheduleName === name);
-    if(!schedName)
-    {
-        res.status(404).send('Schedule name does not exist');
-    }
-    else{
-        const index = scheduleNamesArray.indexOf(schedName);
-        scheduleNamesArray.splice(index, 1)
-        res.send(scheduleNamesArray);
+app.delete('/api/secure/courses/users/:userEmail/schedules/:name', (req, res) => {
+    authHeader = req.header('Authorization');
+
+    if(authHeader) {
+        const bearer = authHeader.split(' ');
+        const token = bearer[1];
+
+        admin.auth().verifyIdToken(token)
+        .then((decodedToken) => {
+            console.log(decodedToken);
+
+            const name = req.params.name;
+            const schedName = false;
+            const result = [];
+        
+            for(i = 0; i < userNames.length; i++)
+                {
+                    if(userNames[i].email == req.params.userEmail)
+                    {
+                        for(j = 0; j < userNames[i].scheduleNamesArray.length; j++)
+                        {
+                            if(userNames[i].scheduleNamesArray[j].scheduleName == NewName)
+                            {
+                                schedName = true;
+                            }
+                        }
+                    }
+                }
+        
+            if(schedName == false)
+            {
+                res.status(404).send('Schedule name does not exist');
+            }
+            else if(schedName == true){
+        
+                for(i = 0; i < userNames.length; i++)
+                {
+                    if(userNames[i].email == req.params.userEmail)
+                    {
+                        for(j = 0; j < userNames[i].scheduleNamesArray.length; j++)
+                        {
+                            if(userNames[i].scheduleNamesArray[j].scheduleName == NewName)
+                            {
+                                const index = userNames[i].scheduleNamesArray[j].indexOf(name);
+                                userNames[i].scheduleNamesArray[j].splice(index, 1);
+                                result = userNames[i].scheduleNamesArray[j];
+                            }
+                        }
+                    }
+                }
+        
+                res.send(result);
+            }
+            
+
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 });
 
+
 // Route to GET a list of schedule names with the number of courses that are saved -- #8
-app.get('/api/secure/courses/schedules', (req, res) => {
-    const NamesOfSchedules = [];
-    for (i = 0; i < scheduleNamesArray.length; i++) {
-        NamesOfSchedules.push({
-            "scheduleName": scheduleNamesArray[i].scheduleName,
-            "numberOfCourses": scheduleNamesArray[i].codePairsList.length
+app.get('/api/secure/courses/users/:userEmail/schedules', (req, res) => {
+    authHeader = req.header('Authorization');
+
+    if(authHeader) {
+        const bearer = authHeader.split(' ');
+        const token = bearer[1];
+
+        admin.auth().verifyIdToken(token)
+        .then((decodedToken) => {
+            console.log(decodedToken);
+            
+            const NamesOfSchedules = [];
+
+            for(i = 0; i < userNames.length; i++)
+            {
+                if(userNames[i].email == req.params.userEmail)
+                {
+                    for(j = 0; j < userNames[i].scheduleNamesArray.length; j++)
+                    {
+                        NamesOfSchedules.push({
+                            "scheduleName": userNames[i].scheduleNamesArray[j].scheduleName,
+                            "numberOfCourses": userNames[i].scheduleNamesArray[j].codePairsList.length
+                        });
+                    }
+                }
+            }
+
+            res.send(NamesOfSchedules);
+
+        }).catch((error) => {
+            console.log(error);
         });
     }
-    res.send(NamesOfSchedules);
 });
 
 // Route to DELETE all schedules -- #9
