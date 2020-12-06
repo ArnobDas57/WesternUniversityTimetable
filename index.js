@@ -1,20 +1,16 @@
 const express = require('express');
 const app = express();
-var admin = require('firebase-admin');
-var serviceAccount = require(process.cwd() + "/se3316-lab5-firebase-firebase-adminsdk-5cvel-eebff759f3.json");
-var defaultApp = admin.initializeApp({credential: admin.credential.cert(serviceAccount)});
+app.use(express.json());
+
 var stringSimilarity = require('string-similarity');
 
 const port = 3000;
 
-
-app.use(express.json());
+var admin = require('firebase-admin');
+var defaultApp = admin.initializeApp();
+var defaultAuth = defaultApp.auth();
 
 console.log(defaultApp.name); // '[DEFAULT]'
-
-// Retrieve services via the defaultApp variable
-var defaultAuth = defaultApp.auth();
-// var defaultDatabase = defaultApp.database();
 
 //Function to parse JSON file
 function parsingFunction (datafile) {
@@ -23,8 +19,6 @@ function parsingFunction (datafile) {
 }
 
 const courseData = parsingFunction('Lab3-timetable-data.json'); 
-// Array of schedule objects
-const scheduleNamesArray = [];
 
 // Setup serving front-end code
 app.use(express.static(process.cwd() + '/angular-frontend/dist/angular-frontend'));
@@ -115,14 +109,12 @@ app.get('/api/open/courses/subjects/numberAndComponent/:catalog_nbr', (req, res)
         res.status(404).send('The timetable entry was not found');
     }
 });
-((keyword.trim()).replace(/\s/g, ''))
-// Route to GET timetable entry with course and component
-app.get('/api/open/courses/subjects/keywords/:keyword)', (req, res) => {
+
+app.get('/api/open/courses/subjects/keywords/:keyword', (req, res) => {
     const ttEntry = [];
     for(i = 0; i < courseData.length; i++) {
-        if (((String(courseData[i].subject).trim()).replace(/\s/g, '')).includes(`${req.params.keyword}`) 
-            || ((String(courseData[i].className).trim()).replace(/\s/g, '')).includes(`${req.params.keyword}`)
-            || ((String(courseData[i].catalog_nbr).trim()).replace(/\s/g, '')).includes(`${req.params.keyword}`)) 
+        if (stringSimilarity.compareTwoStrings(`${req.params.keyword}`, String(courseData[i].className)) >= 0.3
+            || stringSimilarity.compareTwoStrings(`${req.params.keyword}`, String(courseData[i].catalog_nbr)) >= 0.3) 
         {
             ttEntry.push(courseData[i]);
         }
@@ -153,6 +145,9 @@ app.get('/api/open/courses/subjects/:subject/:catalog_nbr', (req, res) => {
         res.status(404).send('The timetable entry was not found');
     }
 });
+
+// Array of schedule objects
+const scheduleNamesArray = [];
 
 // Route to create new schedule with given schedule name using POST -- #4
 app.post('/api/secure/courses/schedules', (req, res) => {

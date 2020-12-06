@@ -34,7 +34,7 @@ export class AppComponent {
   };
 
   keywordSearch(keyword: string) {
-    this.kwResults = this.http.get<Result[]>(this.ROOT_URL + `/open/courses/subjects/keywords/${keyword}`);
+    this.kwResults = this.http.get<Result5[]>(this.ROOT_URL + `/open/courses/subjects/keywords/${keyword}`);
     return this.kwResults;
   }
 
@@ -68,20 +68,20 @@ export class AppComponent {
      scheduleName: name
     }
 
-   this.newSchedule = this.http.post(this.ROOT_URL + '/courses/schedules', data, this.httpOptions).toPromise().then(e => {
+   this.newSchedule = this.http.post(this.ROOT_URL + '/secure/courses/schedules', data, this.httpOptions).toPromise().then(e => {
      console.log(e);
    }); 
    return amount;
   }
 
   AddCourses(courses: any, schedName: string) {
-    this.http.put(this.ROOT_URL + `/courses/schedules/${schedName}`, courses, this.httpOptions).toPromise().then(e => {
+    this.http.put(this.ROOT_URL + `/secure/courses/schedules/${schedName}`, courses, this.httpOptions).toPromise().then(e => {
       console.log(e);
     });
   }
 
   getSchedules(scheduleName: any) {
-    this.savedSchedules = this.http.get<SavedSchedule[]>(this.ROOT_URL + `/courses/schedules/${scheduleName}`);
+    this.savedSchedules = this.http.get<SavedSchedule[]>(this.ROOT_URL + `/secure/courses/schedules/${scheduleName}`);
     return this.savedSchedules;
   }
 }

@@ -1,50 +1,75 @@
   <h1>Log Into Western Timetable</h1>
   <div class="form1">
       <form>
+        <h2>Login With User Credentials</h2>
         <div>
             <label for="email"><b>Email</b></label>
-            <input #emailField type="text" name="email" placeholder="Enter email" id="emailbox">
+            <input #emailField type="text" name="email" placeholder="Enter email" id="emailbox" (input)="search(emailField.value)">
         </div>
         <div>
             <label for="password"><b>Password</b></label>
-            <input #passwordField type="password" name="password" placeholder="Enter password" id="passwordbox">    
+            <input #passwordField type="password" name="password" placeholder="Enter password" id="passwordbox" (input)="search(passwordField.value)">    
         </div>    
-        <div class="loginBtn">
-            <button type="submit" (click)="emailSignIn(emailField.value, passwordField.value); getCurrentUserToken();">Login</button>
+        <div *ngIf="this.correctLogin == false" class="loginBtn">
+            <button (click)="emailSignIn(emailField.value, passwordField.value); emailField.value=''; passwordField.value=''">Login</button>
         </div>
         <div *ngIf="this.emptyEmail == true">
             <a class="alert">Please enter an email</a>
         </div>
+        <div *ngIf="this.invalidEmail == true">
+            <a class="alert">Please enter a valid email</a>
+        </div>
         <div *ngIf="this.emptyPassword == true">
             <a class="alert">Please enter a password</a>
         </div>
-        <div class="GoogleLogin">
-           <a (click)="loginGoogle()" class="Google">Login with Google</a> 
+        <div *ngIf="this.correctLogin == true">
+            <a class="success">You have successfully logged in</a>
         </div>
-        <div class="NAC">
+        <div *ngIf="this.incorrectLogin == true && this.correctLogin == false">
+            <a class="failure">Login unsuccessful: Please enter correct email and password</a>
+        </div>
+        <div *ngIf="this.correctLogin == false" class="GoogleLogin">
+           <a (click)="getCurrentUserToken()" class="Google">Login with Google</a> 
+        </div>
+        <div *ngIf="this.correctLogin == true" class="Update">
+            <a (click)="activateNewPassword()"><u>Click Here to Create New Account (NAC)</u></a>
+        </div>
+        <div *ngIf="this.correctLogin == false" class="NAC">
             <a (click)="activateNAC()"><u>Click Here to Create New Account (NAC)</u></a>
         </div>
       </form>
   </div>
       
   <div class="form2" *ngIf="this.indicater == true">
-    <h2>Create a New Account</h2>
+    <h2>Create A New Account</h2>
     <div>
         <label for="userbox"><b>Username</b></label>
-        <input type="text" placeholder="Enter username" id="userbox"/>
+        <input #userBox type="text" placeholder="Enter username" id="userbox"/>
     </div>
     <div>
         <label for="emailbox"><b>Email</b></label>
-        <input type="text" placeholder="Enter email" id="emailbox"/>
+        <input #emailBox type="text" placeholder="Enter email" id="emailbox"/>
     </div>
     <div>
         <label for="passwordbox"><b>Password</b></label>
-        <input type="text" placeholder="Enter password" id="passwordbox"/>    
+        <input #passwordBox type="text" placeholder="Enter password" id="passwordbox"/>    
     </div>    
-    <div class="CreateAccountBtn">
-        <button type="submit">Create Account</button>
+    <div *ngIf="this.correctCreation == false" class="CreateAccountBtn">
+        <button (click)="emailSignUp(userBox.value, emailBox.value, passwordbox.value); userBox.value=''; emailField.value=''; passwordField.value=''">Create Account</button>
     </div>
   </div>
+
+  <div class="form2" *ngIf="this.indicater == true && this.correctLogin == true">
+    <h2>Update Existing Password</h2>
+    <div>
+        <label for="newPasswordbox"><b>New Password</b></label>
+        <input #updateBox type="text" placeholder="Enter new password" id="newPasswordbox"/>
+    </div>
+    <div class="UpdateBtn">
+        <button (click)="UpdatePassword(updateBox.value); updateBox.value=''">Update Password</button>
+    </div>
+  </div>
+
 
   <div class="backBtn">
     <button (click)="goBack()">go back</button>

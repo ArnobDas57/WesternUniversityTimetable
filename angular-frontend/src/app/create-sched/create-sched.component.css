@@ -1,4 +1,4 @@
-label {
+.lbl{
     font-weight: bold;
     margin-left: 15px;
   }
@@ -13,6 +13,7 @@ label {
     cursor: hand;
     font-family: Arial;
     margin-bottom: 40px;
+    margin-top: 15px;
   }
   
   button:hover {
@@ -22,9 +23,14 @@ label {
   table {
     margin-top: 20px;
     border-collapse: collapse;
-    width: 100%;
+    width: 50%;
+    margin: 0 auto;
   }
   
+  #ib2 {
+    width: 50px;
+  }
+
   td {
     border: 2px solid #000000;
     text-align: center;
@@ -44,4 +50,18 @@ label {
   div {
     margin-top: 35px;
     text-align: center;
+  }
+
+  #dBox {
+    width: 40%;
+    height: 50px;
+    margin: 0 auto;
+    resize: none;
+  }
+
+  #tabelLabel {
+    margin: 0 auto;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: underline;
   }

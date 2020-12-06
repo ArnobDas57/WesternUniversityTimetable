@@ -35,9 +35,9 @@ export class CourseSearchComponent implements OnInit {
     this.results3b = '';
     this.results4 = '';
 
-    if(((keyword.trim()).replace(/\s/g, '')).length >= 4)
+    if(((keyword.trim()).split(' ').join('')).length >= 4)
     {
-      this.kwResults = this.appcomponent.keywordSearch(((keyword.trim()).replace(/\s/g, '')));
+      this.kwResults = this.appcomponent.keywordSearch((keyword.trim()).split(' ').join(''));
     }
   }
 
@@ -47,6 +47,7 @@ export class CourseSearchComponent implements OnInit {
     this.results3a = '';
     this.results3b = '';
     this.results4 = '';
+    this.kwResults = '';
   }
 
   getResults2(subjectcode: string) {
@@ -55,6 +56,7 @@ export class CourseSearchComponent implements OnInit {
     this.results3a = '';
     this.results3b = '';
     this.results4 = '';
+    this.kwResults = '';
   }
 
   getResults3a(subjectcode: string, catalognum: string) {
@@ -63,6 +65,7 @@ export class CourseSearchComponent implements OnInit {
     this.results = '';
     this.results3b = '';
     this.results4 = '';
+    this.kwResults = '';
   }
 
   getResults3b(subjectcode: string, catalognum: string, ssrcomponent: string) {
@@ -71,6 +74,7 @@ export class CourseSearchComponent implements OnInit {
     this.results3a = '';
     this.results = '';
     this.results4 = '';
+    this.kwResults = '';
   } 
 
   getResults4(catalognum: string) {
@@ -79,6 +83,7 @@ export class CourseSearchComponent implements OnInit {
     this.results3a = '';
     this.results = '';
     this.results3b = '';
+    this.kwResults = '';
   } 
 
   expand()

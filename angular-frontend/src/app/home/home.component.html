@@ -5,3 +5,53 @@
 <nav>
     <a routerLink="/login-page">Login to Western Timetable</a>
 </nav>
+
+<h1>Recent Course Lists</h1>
+<div>
+    <ul>
+        <li>
+
+        </li>
+    </ul>
+</div>
+
+
+
+
+
+<!-- 
+    <h2>Recent Public Schedules (Course Lists)</h2>
+    <div>
+    <ul class="search-result">
+        <span class="sName"> SCHEDULE NAME: {{scheduleName.value}} </span>
+        <li *ngFor="let c of schedules | async">
+        <h5> {{ c.subject }} {{ c.catalog_nbr }} - {{ c.className }}</h5>
+        <span>{{ c.description }}</span>
+        <table>
+            <tr>
+            <td> Section </td>
+            <td> Component </td>
+            <td> Class Number </td>
+            <td> Days </td>
+            <td> Start Time </td>
+            <td> End Time </td>
+            <td> Campus </td>
+            <td> Instructor </td>
+            <td> Status </td>
+            </tr>
+            <tr>
+            <td>{{ c.course_info[0].class_section }}</td>
+            <td>{{ c.course_info[0].ssr_component }}</td>
+            <td>{{ c.course_info[0].class_nbr }}</td>
+            <td>{{ c.course_info[0].days }}</td>
+            <td>{{ c.course_info[0].start_time }}</td>
+            <td>{{ c.course_info[0].end_time }}</td>
+            <td>{{ c.course_info[0].campus }}</td>
+            <td>{{ c.course_info[0].instructors }}</td>
+            <td>{{ c.course_info[0].enrl_stat }}</td>
+            </tr>
+        </table>
+        </li>
+    </ul>
+    </div> 
+-->

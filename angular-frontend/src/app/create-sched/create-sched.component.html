@@ -2,18 +2,25 @@
 
 <div>
   <h3>
-    <label for="ib1">Name: </label>
+    <label class="lbl" for="ib1">Name: </label>
     <input #inputBox1 placeholder="Schedule Name" id="ib1" (input)="search(inputBox1.value)"/>
 
-    <label for="ib2">Quantity: </label>
-    <input #inputBox2 placeholder="Quantity of Courses" id="ib2" type="number" (input)="search(inputBox2.value)"/>
+    <label class="lbl" for="ib2">Quantity: </label>
+    <input #inputBox2 placeholder="#" id="ib2" type="number" (input)="search(inputBox2.value)"/>
+
+    <label class="lbl" for="ib3">Description </label>
+    <input #inputBox3 id="ib3" type="checkbox"/>
+
+    <label class="lbl" for="ib4">Public Visibility</label>
+    <input #inputBox4 id="ib4" type="checkbox"/>
 
     <button *ngIf="inputBox1.value && (inputBox2.value && inputBox2.value > 0)" 
-            (click)="add(inputBox1.value, inputBox2.value);"> Create Schedule </button>
+        (click)="add(inputBox1.value, inputBox2.value);"> Create Schedule </button>
   </h3>
 </div>
 
-<table #table *ngIf="inputBox1.value && (inputBox2.value && (inputBox2.value > 0 && 11 > inputBox2.value))" >
+<label id="tabelLabel" for="table1"  *ngIf="inputBox1.value && (inputBox2.value && (inputBox2.value > 0 && 11 > inputBox2.value))">Add Courses</label>
+<table #table id="table1" *ngIf="inputBox1.value && (inputBox2.value && (inputBox2.value > 0 && 11 > inputBox2.value))" >
   <tr>
     <td> # </td>
     <td> Subject Code </td>
@@ -26,6 +33,11 @@
   </tr>
 </table>
 
+<div *ngIf="(inputBox3.checked == true) && inputBox1.value && (inputBox2.value && (inputBox2.value > 0 && 11 > inputBox2.value))">
+    <h4>Schedule Description</h4>
+    <textarea #DescriptionBox id="dBox" placeholder="Add a description..."></textarea>
+</div>
+
 <div *ngIf="inputBox1.value && (inputBox2.value && inputBox2.value > 0  && 11 > inputBox2.value)">
-  <button (click)="addCourses(inputBox1.value); inputBox1.value=''; inputBox2.value=''"> Add Selected Courses </button>
+  <button (click)="addCourses(inputBox1.value); inputBox1.value=''; inputBox2.value=''"> Save Schedule </button>
 </div>
