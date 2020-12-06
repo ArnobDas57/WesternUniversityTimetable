@@ -29,7 +29,7 @@
             <a class="failure">{{ this.errormessage1 }}</a>
         </div>
         <div *ngIf="this.correctLogin == false" class="GoogleLogin">
-           <a (click)="getCurrentUserToken()" class="Google">Login with Google</a> 
+           <a (click)="loginGoogle()" class="Google">Login with Google</a> 
         </div>
         <div *ngIf="this.correctLogin == true && this.incorrectLogin == false" class="Update">
             <a (click)="activateNewPassword()"><u>Click here to Update Password</u></a>

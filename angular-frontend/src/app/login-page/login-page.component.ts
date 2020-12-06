@@ -178,7 +178,9 @@ export class LoginPageComponent {
 
   loginGoogle() 
   {
-     this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+     this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+     .then(() => console.log('successful authentication'))
+     .catch(error => console.log(error));
   }
   
   getCurrentUserToken(): void {
