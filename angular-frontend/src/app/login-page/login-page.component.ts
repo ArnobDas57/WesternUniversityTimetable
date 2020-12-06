@@ -24,62 +24,157 @@ export class LoginPageComponent {
   public indicater = false;
   public indicater2 = false;
   public emptyEmail = false;
+  public emptyEmail2 = false;
   public emptyPassword = false;
+  public emptyPassword2 = false;
+  public invalidnewPassword = false;
+  public passwordUpdated = false;
   public invalidEmail = false;
+  public invalidEmail2 = false;
+  public invalidUsername = false;
   public correctLogin = false;
   public incorrectLogin = false;
   public correctCreation = false;
+  public incorrectCreation = false;
 
-  emailSignIn(email: any, password: any)
+  public errormessage1: string;
+  public errormessage2: string;
+
+  emailSignIn(email: string, password: string)
   {
     if(email == null)
     {
+      this.invalidEmail = false;
       this.emptyEmail = true;
+      this.emptyPassword = false;
     }
 
-    else if (password == null)
+    else if (email != null && password == null)
     {
+      this.invalidEmail = false;
+      this.emptyEmail = false;
       this.emptyPassword = true;
     }
 
     else if (!(email.includes('@') && email.includes('.')))
     {
       this.invalidEmail = true;
+      this.emptyEmail = false;
+      this.emptyPassword = false;
     }
 
     else if (email == null && password == null)
     {
+      this.invalidEmail = false;
       this.emptyEmail = true;
       this.emptyPassword = true;
     }
 
     else 
     {
+      this.invalidEmail = false;
       this.emptyEmail = false;
       this.emptyPassword = false;
 
       this.auth.signInWithEmailAndPassword(email, password)
       .then((user) => {
         console.log(user);
+        this.incorrectLogin = false;
         this.correctLogin = true;
       }).catch((error) => {
-        console.log(error)
+        console.log(error);
+        console.log(error.code);
+        console.log(error.message);
+        this.errormessage1 = error.message;
         this.incorrectLogin = true;
+        this.correctLogin = false;
       });
     }
   }
   
-  emailSignUp() 
+  emailSignUp(username: string, email: string, password: string) 
   {
+    if(username == null)
+    {
+      this.invalidUsername = true;
+      this.invalidEmail2 = false;
+      this.emptyEmail2 = false;
+      this.emptyPassword2 = false;
+    }
 
+    if(username != null && email == null)
+    {
+      this.invalidUsername = false;
+      this.invalidEmail2 = false;
+      this.emptyEmail2 = true;
+      this.emptyPassword2 = false;
+    }
 
+    else if (username != null && email != null && password == null)
+    {
+      this.invalidUsername = false;
+      this.invalidEmail2 = false;
+      this.emptyEmail2 = false;
+      this.emptyPassword2 = true;
+    }
+
+    else if (!(email.includes('@') && email.includes('.')))
+    {
+      this.invalidUsername = false;
+      this.invalidEmail2 = true;
+      this.emptyEmail2 = false;
+      this.emptyPassword2 = false;
+    }
+
+    else if (username == null && email == null && password == null)
+    {
+      this.invalidUsername = true;
+      this.invalidEmail2 = false;
+      this.emptyEmail2 = true;
+      this.emptyPassword2 = true;
+    }
+
+    else 
+    {
+      this.invalidUsername = false;
+      this.invalidEmail2 = false;
+      this.emptyEmail2 = false;
+      this.emptyPassword2 = false;
+
+      this.auth.createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        console.log(user);
+        this.correctCreation = true;
+        this.incorrectCreation = false;
+      }).catch((error) => {
+        console.log(error);
+        console.log(error.code);
+        console.log(error.message);
+        this.errormessage2 = error.message;
+        this.incorrectCreation = true;
+      });
+    }
   }
 
-  UpdatePassword()
+  UpdatePassword(newpass: string)
   {
+    if(newpass == null)
+    {
+      this.invalidnewPassword = true;
+      this.passwordUpdated = false;
+    }
 
+    else 
+    { 
+      this.auth.currentUser.then((user) => {
+        if(user){
+          user.updatePassword(newpass);
+        } 
+      });
+      this.invalidnewPassword = false;
+      this.passwordUpdated = true;
+    }
   }
-
 
   loginGoogle() 
   {

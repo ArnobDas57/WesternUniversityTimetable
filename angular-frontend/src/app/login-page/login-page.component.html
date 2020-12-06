@@ -22,20 +22,20 @@
         <div *ngIf="this.emptyPassword == true">
             <a class="alert">Please enter a password</a>
         </div>
-        <div *ngIf="this.correctLogin == true">
+        <div *ngIf="this.correctLogin == true && this.incorrectLogin == false">
             <a class="success">You have successfully logged in</a>
         </div>
         <div *ngIf="this.incorrectLogin == true && this.correctLogin == false">
-            <a class="failure">Login unsuccessful: Please enter correct email and password</a>
+            <a class="failure">{{ this.errormessage1 }}</a>
         </div>
         <div *ngIf="this.correctLogin == false" class="GoogleLogin">
            <a (click)="getCurrentUserToken()" class="Google">Login with Google</a> 
         </div>
-        <div *ngIf="this.correctLogin == true" class="Update">
-            <a (click)="activateNewPassword()"><u>Click Here to Create New Account (NAC)</u></a>
+        <div *ngIf="this.correctLogin == true && this.incorrectLogin == false" class="Update">
+            <a (click)="activateNewPassword()"><u>Click here to Update Password</u></a>
         </div>
         <div *ngIf="this.correctLogin == false" class="NAC">
-            <a (click)="activateNAC()"><u>Click Here to Create New Account (NAC)</u></a>
+            <a (click)="activateNAC()"><u>Click here to Create New Account (NAC)</u></a>
         </div>
       </form>
   </div>
@@ -44,32 +44,55 @@
     <h2>Create A New Account</h2>
     <div>
         <label for="userbox"><b>Username</b></label>
-        <input #userBox type="text" placeholder="Enter username" id="userbox"/>
+        <input #userBox type="text" placeholder="Enter username" id="userbox" (input)="search(userBox.value)"/>
     </div>
     <div>
         <label for="emailbox"><b>Email</b></label>
-        <input #emailBox type="text" placeholder="Enter email" id="emailbox"/>
+        <input #emailBox type="text" placeholder="Enter email" id="emailbox" (input)="search(emailBox.value)"/>
     </div>
     <div>
         <label for="passwordbox"><b>Password</b></label>
-        <input #passwordBox type="text" placeholder="Enter password" id="passwordbox"/>    
+        <input #passwordBox type="text" placeholder="Enter password" id="passwordbox" (input)="search(passwordBox.value)"/>    
     </div>    
     <div *ngIf="this.correctCreation == false" class="CreateAccountBtn">
-        <button (click)="emailSignUp(userBox.value, emailBox.value, passwordbox.value); userBox.value=''; emailField.value=''; passwordField.value=''">Create Account</button>
+        <button (click)="emailSignUp(userBox.value, emailBox.value, passwordBox.value); userBox.value=''; emailBox.value=''; passwordBox.value=''">Create Account</button>
+    </div>
+    <div *ngIf="this.invalidUsername == true">
+        <a class="alert">Please enter a username</a>
+    </div>
+    <div *ngIf="this.emptyEmail2 == true">
+        <a class="alert">Please enter an email</a>
+    </div>
+    <div *ngIf="this.invalidEmail2 == true">
+        <a class="alert">Please enter a valid email</a>
+    </div>
+    <div *ngIf="this.emptyPassword2 == true">
+        <a class="alert">Please enter a password</a>
+    </div>
+    <div *ngIf="this.correctCreation == true && this.incorrectCreation == false">
+        <a class="success">You have successfully registered and logged in</a>
+    </div>
+    <div *ngIf="this.incorrectCreation == true && this.correctCreation == false">
+        <a class="failure">{{ this.errormessage2 }}</a>
     </div>
   </div>
 
-  <div class="form2" *ngIf="this.indicater == true && this.correctLogin == true">
+  <div class="form2" *ngIf="this.indicater2 == true && this.correctLogin == true">
     <h2>Update Existing Password</h2>
     <div>
         <label for="newPasswordbox"><b>New Password</b></label>
-        <input #updateBox type="text" placeholder="Enter new password" id="newPasswordbox"/>
+        <input #updateBox type="text" placeholder="Enter new password" id="newPasswordbox" (input)="search(updateBox.value)"/>
     </div>
     <div class="UpdateBtn">
         <button (click)="UpdatePassword(updateBox.value); updateBox.value=''">Update Password</button>
     </div>
+    <div *ngIf="this.invalidnewPassword == true && this.passwordUpdated == false">
+        <a class="failure">Please enter a new password to update</a>
+    </div>
+    <div *ngIf="this.passwordUpdated == true && this.invalidnewPassword == false">
+        <a class="failure">Password successfully updated</a>
+    </div>
   </div>
-
 
   <div class="backBtn">
     <button (click)="goBack()">go back</button>
