@@ -4,7 +4,8 @@ app.use(express.json());
 
 var stringSimilarity = require('string-similarity');
 
-const port = 3000;
+//PORT 
+const port = process.env.PORT || 3000;
 
 var admin = require('firebase-admin');
 var defaultApp = admin.initializeApp();
@@ -206,8 +207,6 @@ app.post('/api/secure/courses/users/:userEmail/schedules', (req, res) => {
             console.log(decodedToken);
 
             const NewName = req.body.scheduleName;
-            const NewDescription = req.body.optionalDescription;
-            const NewVisibility = req.body.visibility;
             const schedName = false;
             const result = [];
 
@@ -261,7 +260,7 @@ app.put('/api/secure/courses/users/:userEmail/schedules/:name', (req, res) => {
             console.log(decodedToken);
             
             const name = req.params.name;
-            const newName = req.params.newName;
+            const newName = req.body.newName;
             const NewDescription = req.body.optionalDescription;
             const NewVisibility = req.body.visibility;
             const codePairsList = req.body.codePairsList;
@@ -298,8 +297,7 @@ app.put('/api/secure/courses/users/:userEmail/schedules/:name', (req, res) => {
                             userNames[i].scheduleNamesArray[j].visibility = NewVisibility;
                             userNames[i].scheduleNamesArray[j].description = NewDescription;
                             userNames[i].scheduleNamesArray[j].scheduleName = newName;
-                            userNames[i].scheduleNamesArray[j].codePairsList = codePairsList;
-
+                            
                             for(i1 = 0; i1 < codePairsList.length; i1++){
                                 for(j1 = 0; j1 < courseData.length; j1++){
                                     if (String(courseData[j1].subject).includes(`${codePairsList[i1].subject}`)

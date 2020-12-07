@@ -19,6 +19,11 @@
   </h3>
 </div>
 
+<div *ngIf="(inputBox3.value) && inputBox1.value && (inputBox2.value && (inputBox2.value > 0 && 11 > inputBox2.value))">
+  <h4>Schedule Description</h4>
+  <textarea #DescriptionBox id="dBox" placeholder="Add a description..."></textarea>
+</div>
+
 <label id="tabelLabel" for="table1"  *ngIf="inputBox1.value && (inputBox2.value && (inputBox2.value > 0 && 11 > inputBox2.value))">Add Courses</label>
 <table #table id="table1" *ngIf="inputBox1.value && (inputBox2.value && (inputBox2.value > 0 && 11 > inputBox2.value))" >
   <tr>
@@ -33,11 +38,27 @@
   </tr>
 </table>
 
-<div *ngIf="(inputBox3.checked == true) && inputBox1.value && (inputBox2.value && (inputBox2.value > 0 && 11 > inputBox2.value))">
-    <h4>Schedule Description</h4>
-    <textarea #DescriptionBox id="dBox" placeholder="Add a description..."></textarea>
+<div *ngIf="inputBox3.value && inputBox1.value && (inputBox2.value && inputBox2.value > 0  && 11 > inputBox2.value) && !inputBox4.value">
+  <button *ngIf="DescriptionBox.value" (click)="addCourses(inputBox1.value, DescriptionBox.value, 'private', inputBox1); inputBox1.value=''; inputBox2.value=''; inputBox3.value=''; inputBox4.value=''"> Save Schedule </button>
 </div>
 
-<div *ngIf="inputBox1.value && (inputBox2.value && inputBox2.value > 0  && 11 > inputBox2.value)">
-  <button (click)="addCourses(inputBox1.value); inputBox1.value=''; inputBox2.value=''"> Save Schedule </button>
+<div *ngIf="!inputBox3.value && inputBox1.value && (inputBox2.value && inputBox2.value > 0  && 11 > inputBox2.value) && !inputBox4.value">
+  <button (click)="addCourses(inputBox1.value, 'no description', 'private', inputBox1.value); inputBox1.value=''; inputBox2.value=''; inputBox3.value=''; inputBox4.value=''"> Save Schedule </button>
+</div>
+
+<div *ngIf="inputBox3.value && inputBox1.value && (inputBox2.value && inputBox2.value > 0  && 11 > inputBox2.value) && inputBox4.value">
+  <button *ngIf="DescriptionBox.value" (click)="addCourses(inputBox1.value, DescriptionBox.value, 'public', inputBox1); inputBox1.value=''; inputBox2.value=''; inputBox3.value=''; inputBox4.value=''"> Save Schedule </button>
+</div>
+
+<div *ngIf="!inputBox3.value && inputBox1.value && (inputBox2.value && inputBox2.value > 0  && 11 > inputBox2.value) && inputBox4.value">
+  <button (click)="addCourses(inputBox1.value, 'no description', 'public', inputBox1.value); inputBox1.value=''; inputBox2.value=''; inputBox3.value=''; inputBox4.value=''"> Save Schedule </button>
+</div>
+
+<div>
+  <ul class="search-result">
+    <span class="sName" (click)="getAllUserSchedules()"> View Saved Course Lists </span>
+    <li *ngFor="let c of allSchedules">
+      <span>{{ c.scheduleName }}</span>
+    </li>
+  </ul>
 </div>

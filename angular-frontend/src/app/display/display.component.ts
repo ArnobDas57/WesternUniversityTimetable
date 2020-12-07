@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Schedule } from '../schedule';
 import { Observable, Subject } from 'rxjs';
 import { AppComponent } from '../app.component';
+import { ActivatedRoute } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Location } from '@angular/common';
+import firebase from 'firebase/app';
 
 
 @Component({
@@ -18,10 +22,19 @@ export class DisplayComponent implements OnInit {
 
   schedules: any;
   
-  constructor(private appcomponent: AppComponent) { }
+  constructor(private appcomponent: AppComponent, public auth: AngularFireAuth) { }
 
   getSchedules(scheduleName: string) {
-    this.schedules = this.appcomponent.getSchedules(scheduleName);
+    this.auth.currentUser.then((user) => {
+      if (user) {
+        user.getIdToken(true).then(token => {
+            const email = user.email;            
+            this.schedules = this.appcomponent.GetScheduleInfo(scheduleName, email, token);
+      });
+    } else {
+      console.log("No user signed in");
+    }
+  });
   }
 
   ngOnInit(): void {}

@@ -68,11 +68,9 @@ export class AppComponent {
     return this.results4;
   }
 
-  createSched(name: string, amount: number, desc: string, vis: string, email: string, token: any) {
+  createSched(name: string, amount: number, email: string, token: any) {
    const data = {
-     scheduleName: name,
-     optionalDescription: desc,
-     visibility: vis
+     scheduleName: name
     }
 
     this.httpOptions = {
@@ -85,10 +83,18 @@ export class AppComponent {
    return amount;
   }
 
-  AddCourses(courses: any, schedName: string, email: string, token: any) {
+  AddCourses(courses: any, schedName: string, newSchedName: string, description: string, vis: string, email: string, token: any) {
     this.httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token})
     };
+
+    const data = {
+      scheduleName: name,
+      newName: newSchedName,
+      optionalDescription: description,
+      visibility: vis,
+      codePairsList: courses
+     }
 
     this.http.put(this.ROOT_URL + `/secure/courses/users/${email}/schedules/${schedName}`, courses, this.httpOptions).toPromise().then(e => {
       console.log(e);
@@ -121,5 +127,20 @@ export class AppComponent {
 
   this.allSchedules = this.http.get<SavedSchedule[]>(this.ROOT_URL + `/secure/courses/users/${email}/schedules`, this.httpOptions)
   return this.allSchedules;
+  }
+
+  AddUsername(name: string, Email: string, token: any) {
+    const data = {
+     userName: name,
+     email: Email
+    }
+
+    this.httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token})
+    };
+
+    this.newSchedule = this.http.post(this.ROOT_URL + `/secure/users`, data, this.httpOptions).toPromise().then(e => {
+     console.log(e);
+   }); 
   }
 }

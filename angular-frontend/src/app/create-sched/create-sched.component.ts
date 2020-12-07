@@ -25,16 +25,19 @@ export class CreateSchedComponent implements OnInit {
     this.searchTerms.next(term);
   }
 
+  public createSched = false;
   num;
   quantity;
   SubjectList = [];
   CCList = [];
   Schedule = [];
+  allSchedules: any;
 
-  add(schedName: string, amount: number, desc: string, vis: string) {
+  add(schedName: string, amount: number) {
     this.auth.currentUser.then((user) => {
       if (user) {
         user.getIdToken(true).then(token => {
+          const email = user.email;
 
           this.quantity = [];
           for(let i = 1; i <= this.num; i++) 
@@ -42,7 +45,8 @@ export class CreateSchedComponent implements OnInit {
             this.quantity.push(i);
           }
           
-          this.num = this.appcomponent.createSched(schedName, amount, desc, vis, token);
+          this.num = this.appcomponent.createSched(schedName, amount, email, token);
+          this.createSched = false;
       });
       } else {
         console.log("No user signed in");
@@ -50,7 +54,7 @@ export class CreateSchedComponent implements OnInit {
     });
   }
 
-  addCourses(schedName: string) {
+  addCourses(schedName: any, description: string, visibility: any, newSchedName: string) {
     this.auth.currentUser.then((user) => {
       if (user) {
         user.getIdToken(true).then(token => {
@@ -60,11 +64,12 @@ export class CreateSchedComponent implements OnInit {
             {
               this.Schedule[i] = {subject: this.SubjectList[i], catalog_nbr: this.CCList[i] } 
             }
-            this.appcomponent.AddCourses(this.Schedule, schedName, token);
+
+            this.appcomponent.AddCourses(this.Schedule, String(schedName), newSchedName, description, visibility, email, token);
+            this.createSched = true;
             this.SubjectList = [];
             this.CCList = [];
             this.Schedule = [];
-            
       });
     } else {
       console.log("No user signed in");
@@ -72,11 +77,18 @@ export class CreateSchedComponent implements OnInit {
   });
 }
 
+getAllUserSchedules(){
+  this.allSchedules = [];
+  this.auth.currentUser.then((user) => {
+    if (user) {
+      user.getIdToken(true).then(token => {
+          const email = user.email;            
+          this.allSchedules = this.appcomponent.GetUserSchedules(email, token);
+    });
+  } else {
+    console.log("No user signed in");
+  }
+});
 
-
-
-
-
-
-
+}
 }

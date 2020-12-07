@@ -146,12 +146,13 @@ export class LoginPageComponent {
       this.emptyEmail2 = false;
       this.emptyPassword2 = false;
 
-      // api call checking if username already exists
-
       this.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
         console.log(user);
+        const email = user.user.email;
         // api call sending username, and email 
+        this.appcomponent.AddUsername(username, email, this.getCurrentUserToken());
+
         this.correctCreation = true;
         this.incorrectCreation = false;
       }).catch((error) => {
@@ -202,6 +203,7 @@ export class LoginPageComponent {
       if (user) {
         user.getIdToken(true).then(token => {
           console.log(token);
+          return token;
         });
       }
     });
